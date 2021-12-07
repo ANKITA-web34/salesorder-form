@@ -3,7 +3,7 @@
     <h1>Sales Order</h1>
   </div>
   <form [formGroup]="salesOrder">
-    <div class="container ">
+    <div class="container">
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Party<span>*</span></label>
         <select id="party" class="form-control" formControlName="party" (change)="onPartyChange()">
@@ -33,7 +33,7 @@
             </ng-container>
           </select>
         </div>
-        <div class="col ">
+        <div class="col">
           <label for="taxType" class="form-label">Tax Type<span>*</span></label>
           <select id="taxType" class="form-control" formControlName="taxType">
             <ng-container *ngFor="let tax of taxTypeOptions; let i = index">
@@ -49,7 +49,7 @@
         </div>
         <div class="col">
           <label for="orderDate" class="form-label">Order Date<span>*</span></label>
-          <input type="text" class="form-control" id="orderDate" formControlName="orderDate"/>
+          <input type="text" class="form-control" id="orderDate" formControlName="orderDate" />
         </div>
       </div>
       <div class="row mb-3">
@@ -59,7 +59,7 @@
         </div>
         <div class="col">
           <label for="deliverydate" class="form-label">Delivery Date<span>*</span></label>
-          <input type="text" class="form-control" id="deliverydate" formControlName="deliveryDate"/>
+          <input type="text" class="form-control" id="deliverydate" formControlName="deliveryDate" />
         </div>
         <div class="col">
           <label for="challan" class="form-label">Chanllan<span>*</span></label>
@@ -106,95 +106,153 @@
           <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked />
           <label class="form-check-label" for="exampleRadios1"> design </label>
         </div>
-        <button type="button" class="btn btn2 btn-primary" (click)="onAddMore()">
+        <button type="button" class="btn btn2 btn-primary" (click)="toggleForm()">
           <i class="fas fa-plus" style="user-select: auto"></i>
         </button>
       </div>
 
-      <ng-container *ngIf="getControls()">
+      <ng-container *ngIf="salesOrder.get('showForm').value">
         <div class="text-center color mt-2">
           <h1>Find Products</h1>
         </div>
 
-        <ng-container formArrayName="products" *ngFor="let productsControl of productsControls; let i = index">
-          <div [formGroupName]="i" class="my-3 border py-3 px-3">
-            <div class="row">
-              <div class="col">
-                <label for="productId" class="form-label">Product<span>*</span></label>
-                <input type="text" class="form-control" id="productId" (change)="onProductChange(i)" formControlName="productId" />
-              </div>
+        <div class="my-3 border py-3 px-3">
+          <div class="row">
+            <div class="col">
+              <label for="productId" class="form-label">Product<span>*</span></label>
+              <input type="text" class="form-control" id="productId" formControlName="productId" (change)="onProductChange()" />
+            </div>
 
-              <div class="col">
-                <label for="mrp" class="form-label">MRP<span>*</span></label>
-                <input type="text" class="form-control" id="mrp" formControlName="mrp" />
-              </div>
-              <div class="col">
-                <label for="rate" class="form-label">Rate<span>*</span></label>
-                <input type="text" class="form-control" id="rate" formControlName="rate" />
-              </div>
-              <div class="col">
-                <label for="qnt" class="form-label">Quantity<span>*</span></label>
-                <input type="text" class="form-control" id="qnt" formControlName="qnt" (change)="onQntChange(i)" />
-              </div>
-              <div class="col">
-                <label for="amnt" class="form-label">Amount<span>*</span></label>
-                <input type="text" class="form-control" id="amnt" formControlName="amnt" />
-              </div>
+            <div class="col">
+              <label for="mrp" class="form-label">MRP<span>*</span></label>
+              <input type="text" class="form-control" id="mrp" formControlName="mrp" />
             </div>
-            <div class="row">
-              <div class="col">
-                <label for="dis1" class="form-label">Dis 1 %<span>*</span></label>
-                <input type="text" class="form-control" id="dis1" formControlName="dis1" (change)="onDiscount1Change(i)" />
-              </div>
-              <div class="col">
-                <label for="disamt1" class="form-label">Dis amount<span>*</span></label>
-                <input type="text" class="form-control" id="disamt1" formControlName="disamt1" />
-              </div>
+            <div class="col">
+              <label for="rate" class="form-label">Rate<span>*</span></label>
+              <input type="text" class="form-control" id="rate" formControlName="rate" />
             </div>
-            <div class="row">
-              <div class="col">
-                <label for="dis2" class="form-label">Dis 2 %<span>*</span></label>
-                <input type="text" class="form-control" id="dis2" formControlName="dis2" (change)="onDiscount2Change(i)" />
-              </div>
-              <div class="col">
-                <label for="disamt2" class="form-label">Dis amount<span>*</span></label>
-                <input type="text" class="form-control" id="disamt2" formControlName="disamt2" />
-              </div>
+            <div class="col">
+              <label for="qnt" class="form-label">Quantity<span>*</span></label>
+              <input type="text" class="form-control" id="qnt" formControlName="qnt" (change)="onQntChange()" />
             </div>
-            <div class="row">
-              <div class="col">
-                <label for="tax1" class="form-label">Tax 1<span>*</span></label>
-                <input type="text" class="form-control" id="tax1" formControlName="tax1" />
-              </div>
-              <div class="col">
-                <label for="tax2" class="form-label">Tax 2<span>*</span></label>
-                <input type="text" class="form-control" id="tax2" formControlName="tax2" />
-              </div>
+            <div class="col">
+              <label for="amnt" class="form-label">Amount<span>*</span></label>
+              <input type="text" class="form-control" id="amnt" formControlName="amnt" />
             </div>
           </div>
-        </ng-container>
+          <div class="row">
+            <div class="col">
+              <label for="dis1" class="form-label">Dis 1 %<span>*</span></label>
+              <input type="text" class="form-control" id="dis1" formControlName="dis1" (change)="onDiscount1Change()" />
+            </div>
+            <div class="col">
+              <label for="disamt1" class="form-label">Dis amount<span>*</span></label>
+              <input type="text" class="form-control" id="disamt1" formControlName="disamt1" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="dis2" class="form-label">Dis 2 %<span>*</span></label>
+              <input type="text" class="form-control" id="dis2" formControlName="dis2" (change)="onDiscount2Change()" />
+            </div>
+            <div class="col">
+              <label for="disamt2" class="form-label">Dis amount<span>*</span></label>
+              <input type="text" class="form-control" id="disamt2" formControlName="disamt2" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="tax1" class="form-label">Tax 1<span>*</span></label>
+              <input type="text" class="form-control" id="tax1" formControlName="tax1" />
+            </div>
+            <div class="col">
+              <label for="tax2" class="form-label">Tax 2<span>*</span></label>
+              <input type="text" class="form-control" id="tax2" formControlName="tax2" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col d-flex justify-content-end">
+              <button class="btn btn2 btn-primary mt-2" (click)="onAddProduct()">ADD PRODUCT</button>
+            </div>
+          </div>
+        </div>
       </ng-container>
-      <!-- <ng-container formArrayName="Accordion" *ngFor="let productsControl of productsControls; let i = index">
-        <ngb-accordion [formGroupName]="i" #acc="ngbAccordion" activeIds="ngb-panel-0" formControlName="accordion">
-          <ngb-panel title="Product Data">
+
+      <ng-container *ngIf="getControls()">
+        <ngb-accordion
+          #acc="ngbAccordion"
+          activeIds="ngb-panel-0"
+          formArrayName="products"
+          *ngFor="let productsControl of productsControls; let i = index"
+        >
+          <ngb-panel title="Product-{{ i + 1 }}" [formGroupName]="i">
             <ng-template ngbPanelContent>
-              <label class="form-check-label" for="exampleRadios1"> design </label><br>
-              <label class="form-check-label" for="exampleRadios1"> design </label><br>
-              <label class="form-check-label" for="exampleRadios1"> design </label><br>
-              <label class="form-check-label" for="exampleRadios1"> design </label>
+              <div class="my-3 border py-3 px-3">
+                <div class="row">
+                  <div class="col">
+                    <label for="productId" class="form-label">Product<span>*</span></label>
+                    <input type="text" class="form-control" id="productId" formControlName="productId" />
+                  </div>
+
+                  <div class="col">
+                    <label for="mrp" class="form-label">MRP<span>*</span></label>
+                    <input type="text" class="form-control" id="mrp" formControlName="mrp" />
+                  </div>
+                  <div class="col">
+                    <label for="rate" class="form-label">Rate<span>*</span></label>
+                    <input type="text" class="form-control" id="rate" formControlName="rate" />
+                  </div>
+                  <div class="col">
+                    <label for="qnt" class="form-label">Quantity<span>*</span></label>
+                    <input type="text" class="form-control" id="qnt" formControlName="qnt" />
+                  </div>
+                  <div class="col">
+                    <label for="amnt" class="form-label">Amount<span>*</span></label>
+                    <input type="text" class="form-control" id="amnt" formControlName="amnt" />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <label for="dis1" class="form-label">Dis 1 %<span>*</span></label>
+                    <input type="text" class="form-control" id="dis1" formControlName="dis1" />
+                  </div>
+                  <div class="col">
+                    <label for="disamt1" class="form-label">Dis amount<span>*</span></label>
+                    <input type="text" class="form-control" id="disamt1" formControlName="disamt1" />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <label for="dis2" class="form-label">Dis 2 %<span>*</span></label>
+                    <input type="text" class="form-control" id="dis2" formControlName="dis2" />
+                  </div>
+                  <div class="col">
+                    <label for="disamt2" class="form-label">Dis amount<span>*</span></label>
+                    <input type="text" class="form-control" id="disamt2" formControlName="disamt2" />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <label for="tax1" class="form-label">Tax 1<span>*</span></label>
+                    <input type="text" class="form-control" id="tax1" formControlName="tax1" />
+                  </div>
+                  <div class="col">
+                    <label for="tax2" class="form-label">Tax 2<span>*</span></label>
+                    <input type="text" class="form-control" id="tax2" formControlName="tax2" />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col d-flex justify-content-end">
+                    <button class="btn btn2 btn-danger mt-2" (click)="onDelete(i)">DELETE</button>
+                  </div>
+                </div>
+              </div>
             </ng-template>
           </ngb-panel>
         </ngb-accordion>
-        <div class="d-flex justify-content-end">          
-        <button class="btn btn2 btn-danger mr-4  mt-2" (click)="onDelete('idx')" formControlName="deleteButton">
-          <i class="far fa-times-circle"></i>
-        </button>
-        <button class="btn btn2 btn-primary mt-2" formControlName="addButton">
-          <i class="fas fa-plus" style="user-select: auto"></i>
-        </button>
-      </div>
-      </ng-container> -->
-      <div class="mb-3 font-weight-bold">        
+      </ng-container>
+
+      <div class="mb-3 font-weight-bold">
         <div class="d-flex justify-content-between align-items-center">
           <div>Quantity</div>
           <div>{{ salesOrder.get("quantity").value }}</div>
@@ -211,15 +269,15 @@
           <div>Tax Amount</div>
           <div>{{ salesOrder.get("taxAmount").value }}.00</div>
         </div>
-        <hr>
+        <hr />
         <div class="d-flex justify-content-between align-items-center">
           <div>Total Amount</div>
           <div>{{ salesOrder.get("totalAmount").value }}.00</div>
         </div>
-        <div class="d-flex justify-content-end align-items-end" >
-           <button class="btn btn-primary mt-2"[disabled]="salesOrder.invalid" (click)="onSubmit()">Submit</button>
+        <div class="d-flex justify-content-end align-items-end">
+          <button class="btn btn-primary mt-2" [disabled]="salesOrder.invalid" (click)="onSubmit()">Submit</button>
         </div>
-      </div>   
+      </div>
     </div>
   </form>
 </div>

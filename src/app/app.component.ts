@@ -21,9 +21,24 @@ export class AppComponent {
     orderType: new FormControl(null, [Validators.required]),
     taxType: new FormControl(null, [Validators.required]),
     orderId: new FormControl(null, [Validators.required]),
-    orderDate: new FormControl(`${this.orderDate[2]}-${this.orderDate[1]}-${this.orderDate[0]}`, [Validators.required]),
+    orderDate: new FormControl({ value: `${this.orderDate[2]}-${this.orderDate[1]}-${this.orderDate[0]}`, disabled: true }, [Validators.required]),
     deliveryDate: new FormControl(null, [Validators.required]),
     challan: new FormControl(null, [Validators.required]),
+
+    // FIND PRODUCT FORM
+    showForm: new FormControl(false),
+    productId: new FormControl(null, [Validators.required]),
+    mrp: new FormControl(null, [Validators.required]),
+    rate: new FormControl(null, [Validators.required]),
+    qnt: new FormControl(null, [Validators.required]),
+    amnt: new FormControl(null, [Validators.required]),
+    dis1: new FormControl(null, [Validators.required]),
+    disamt1: new FormControl(null, [Validators.required]),
+    dis2: new FormControl(null, [Validators.required]),
+    disamt2: new FormControl(null, [Validators.required]),
+    tax1: new FormControl(null, [Validators.required]),
+    tax2: new FormControl(null, [Validators.required]),
+
     products: new FormArray([]),
     quantity: new FormControl(0, [Validators.required]),
     amount: new FormControl(0, [Validators.required]),
@@ -119,14 +134,6 @@ export class AppComponent {
     this.salesOrder.get('deliveryDate').setValue(`${actualDeliveryDate[2]}-${actualDeliveryDate[1]}-${actualDeliveryDate[0]}`);
   }
 
-  // onLoad() {
-  //   // const currentDate: any = new Date().toISOString().slice(0, 10).split('-');
-  //   // const splitTime = `${currentDate[2]}-${currentDate[1]}-${currentDate[0]}`
-  //   // this.salesOrder.get('orderDate').setValue(splitTime);
-  //   // this.salesOrder.get('orderDate').disable();
-  //   console.log("hello on load")
-  // }
-
   onBookChange() {
     const orderId = this.salesOrder.get('book').value;
     const currentDate: any = new Date().toISOString().slice(0, 10).split('-');
@@ -138,35 +145,15 @@ export class AppComponent {
     this.salesOrder.get('orderDate').disable();
   }
 
-  onAddMore() {
-    const productsFormArray = this.salesOrder.get('products') as FormArray;
-
-    if (productsFormArray.valid) {
-      productsFormArray.push(
-        new FormGroup({
-          // productSearchString: new FormControl(null, Validators.required),
-          productId: new FormControl(null, [Validators.required]),
-          qnt: new FormControl(null, [Validators.required]),
-          mrp: new FormControl(null, [Validators.required]),
-          rate: new FormControl(null, [Validators.required]),
-          dis1: new FormControl(null, [Validators.required]),
-          disamt1: new FormControl({ value: null, disabled: true }, [Validators.required]),
-          dis2: new FormControl(null, [Validators.required]),
-          disamt2: new FormControl({ value: null, disabled: true }, [Validators.required]),
-          amnt: new FormControl({ value: null, disabled: true }, [Validators.required]),
-          tax1: new FormControl(null),
-          tax2: new FormControl(null),
-          deleteButton: new FormControl(null),
-          addButton: new FormControl(null),
-        })
-      );
-    }
+  toggleForm() {
+    const value = this.salesOrder.get('showForm').value;
+    this.salesOrder.get('showForm').setValue(!value);
   }
 
-  onDelete(idx: any) {
+  onDelete(index: number) {
     const productsFormArray = this.salesOrder.get('products') as FormArray;
     if (productsFormArray.length > 0) {
-      productsFormArray.removeAt(idx);
+      productsFormArray.removeAt(index);
     }
   }
 
@@ -178,100 +165,86 @@ export class AppComponent {
     return (this.salesOrder.get('products') as FormArray).controls.length > 0;
   }
 
-  onProductChange(i: number) {
-    const productsFormArray = this.salesOrder.get('products') as FormArray;
-    const productControls = productsFormArray.controls[i];
-
-    const searchString = +productControls.get('productId').value;
+  onProductChange() {
+    const searchString = +this.salesOrder.get('productId').value;
 
     this.products.forEach((product) => {
       if (product.id === searchString) {
-        // productControls.get('productId').setValue(product.id);
-        productControls.get('mrp').setValue(product.mrp);
-        productControls.get('rate').setValue(product.rate);
+        this.salesOrder.get('mrp').setValue(product.mrp);
+        this.salesOrder.get('rate').setValue(product.rate);
       }
     });
   }
 
-  onQntChange(idx: any) {
-    const productsFormArray = this.salesOrder.get('products') as FormArray;
-    const productControls = productsFormArray.controls[idx];
-
-    let quantity = 0;
-    let amount = 0;
-    let addOfDisAmnt1 = 0;
-    let addOfDisAmnt2 = 0;
-    let grandDiscountAmount = 0;
-    let getTaxValue = 0;
-    let getTaxValue2 = 0;
-    let grandTotalOfTax = 0;
-    let grandTotal = 0;
-
-    productsFormArray.controls.forEach((control: FormControl) => {
-      // FOR TOTAL QUANTITY
-      quantity += +control.get('qnt').value;
-
-      //For grandDiscount
-      addOfDisAmnt1 += (+control.get('mrp').value - +control.get('disamt1').value) * +control.get('qnt').value;
-      addOfDisAmnt2 +=
-        (+control.get('mrp').value -
-          +control.get('disamt1').value -
-          +control.get('disamt2').value * (+control.get('mrp').value - +control.get('disamt1').value)) *
-        +control.get('qnt').value;
-      grandDiscountAmount += addOfDisAmnt1 + addOfDisAmnt2 - +control.get('mrp').value;
-      // addOfDisAmnt += ((+control.get('disamt1').value) + (+control.get('disamt2').value)) * (+control.get('qnt').value);
-      // grandDiscountAmount +=  addOfDisAmnt * +control.get('mrp').value;
-
-      //For GrandTaxAmount
-      getTaxValue += (+control.get('mrp').value * +control.get('tax1').value) / 100;
-      getTaxValue2 += (+control.get('mrp').value * +control.get('tax2').value) / 100;
-      grandTotalOfTax += ((getTaxValue + getTaxValue2) * +control.get('mrp').value) / 100;
-
-      //For Total Amount
-      grandTotal += +control.get('mrp').value - grandDiscountAmount + grandTotalOfTax;
-      console.log(grandTotal);
-
-      // FOR AMOUNT
-      amount += +control.get('qnt').value * +control.get('mrp').value;
-    });
-
-    this.salesOrder.get('quantity').setValue(quantity);
-    this.salesOrder.get('amount').setValue(amount);
-    this.salesOrder.get('discountAmount').setValue(grandDiscountAmount);
-    this.salesOrder.get('taxAmount').setValue(grandTotalOfTax);
-    this.salesOrder.get('totalAmount').setValue(grandTotal);
-
-    const productAmount = +productControls.get('mrp').value * +productControls.get('qnt').value;
-    productControls.get('amnt').setValue(productAmount);
+  onQntChange() {
+    const qnt = +this.salesOrder.get('qnt').value;
+    const mrp = +this.salesOrder.get('mrp').value;
+    const amount = qnt * mrp;
+    this.salesOrder.get('amnt').setValue(amount);
   }
 
-  onDiscount1Change(i: number) {
-    const productsFormArray = this.salesOrder.get('products') as FormArray;
-    const productControls = productsFormArray.controls[i];
-
-    const disPer = +productControls.get('dis1').value;
-    const mrp = +productControls.get('mrp').value;
+  onDiscount1Change() {
+    const disPer = +this.salesOrder.get('dis1').value;
+    const mrp = +this.salesOrder.get('mrp').value;
     const disAmt = (disPer / 100) * mrp;
 
-    productControls.get('disamt1').setValue(disAmt);
-    productControls.get('disamt1').disable();
+    this.salesOrder.get('disamt1').setValue(disAmt);
+    this.salesOrder.get('disamt1').disable();
   }
 
-  onDiscount2Change(i: number) {
-    const productsFormArray = this.salesOrder.get('products') as FormArray;
-    const productControls = productsFormArray.controls[i];
-
-    const disPer1 = +productControls.get('dis1').value;
-    const disPer = +productControls.get('dis2').value;
-    const disAmt1 = +productControls.get('disamt1').value;
-    const mrp = +productControls.get('mrp').value;
+  onDiscount2Change() {
+    const disPer = +this.salesOrder.get('dis2').value;
+    const disAmt1 = +this.salesOrder.get('disamt1').value;
+    const mrp = +this.salesOrder.get('mrp').value;
 
     const disAmt = (disPer / 100) * (mrp - disAmt1);
 
-    productControls.get('disamt2').setValue(disAmt);
-    productControls.get('disamt2').disable();
+    this.salesOrder.get('disamt2').setValue(disAmt);
+    this.salesOrder.get('disamt2').disable();
+  }
 
-    //(Discount/List Price) × 100.
+  onAddProduct() {
+    const productsFormArray = this.salesOrder.get('products') as FormArray;
+
+    const productId = this.salesOrder.get('productId').value;
+    const qnt = this.salesOrder.get('qnt').value;
+    const mrp = this.salesOrder.get('mrp').value;
+    const rate = this.salesOrder.get('rate').value;
+    const dis1 = this.salesOrder.get('dis1').value;
+    const disamt1 = this.salesOrder.get('disamt1').value;
+    const dis2 = this.salesOrder.get('dis2').value;
+    const disamt2 = this.salesOrder.get('disamt2').value;
+    const amnt = this.salesOrder.get('amnt').value;
+    const tax1 = this.salesOrder.get('tax1').value;
+    const tax2 = this.salesOrder.get('tax2').value;
+
+    productsFormArray.push(
+      new FormGroup({
+        productId: new FormControl({ value: productId, disabled: true }),
+        qnt: new FormControl({ value: qnt, disabled: true }),
+        mrp: new FormControl({ value: mrp, disabled: true }),
+        rate: new FormControl({ value: rate, disabled: true }),
+        dis1: new FormControl({ value: dis1, disabled: true }),
+        disamt1: new FormControl({ value: disamt1, disabled: true }),
+        dis2: new FormControl({ value: dis2, disabled: true }),
+        disamt2: new FormControl({ value: disamt2, disabled: true }),
+        amnt: new FormControl({ value: amnt, disabled: true }),
+        tax1: new FormControl({ value: tax1, disabled: true }),
+        tax2: new FormControl({ value: tax2, disabled: true }),
+      })
+    );
+
+    this.salesOrder.get('productId').setValue(null);
+    this.salesOrder.get('qnt').setValue(null);
+    this.salesOrder.get('mrp').setValue(null);
+    this.salesOrder.get('rate').setValue(null);
+    this.salesOrder.get('dis1').setValue(null);
+    this.salesOrder.get('disamt1').setValue(null);
+    this.salesOrder.get('dis2').setValue(null);
+    this.salesOrder.get('disamt2').setValue(null);
+    this.salesOrder.get('amnt').setValue(null);
+    this.salesOrder.get('tax1').setValue(null);
+    this.salesOrder.get('tax2').setValue(null);
   }
 
   onSubmit() {
