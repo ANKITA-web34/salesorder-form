@@ -60,11 +60,11 @@ export class AppComponent {
         btnToggle: new FormControl(false),
       }),
     ]),
-    quantity: new FormControl(0, [Validators.required]),
-    amount: new FormControl(0, [Validators.required]),
-    discountAmount: new FormControl(0, [Validators.required]),
-    taxAmount: new FormControl(0, [Validators.required]),
-    totalAmount: new FormControl(0, [Validators.required]),
+    quantity: new FormControl(null, [Validators.required]),
+    amount: new FormControl(null, [Validators.required]),
+    discountAmount: new FormControl(null, [Validators.required]),
+    taxAmount: new FormControl(null, [Validators.required]),
+    totalAmount: new FormControl(null, [Validators.required]),
     salesman: new FormControl(),
     broker: new FormControl(),
     hasteName: new FormControl(),
@@ -177,10 +177,6 @@ export class AppComponent {
 
     const value = productControls.get('btnToggle').value;
     productControls.get('btnToggle').setValue(!value);
-
-    // const value = this.salesOrder.get('showForm').value;
-    // this.salesOrder.get('showForm').setValue(!value);
-    // this.toggleButton = !this.toggleButton;
   }
 
   onDelete(index: number) {
