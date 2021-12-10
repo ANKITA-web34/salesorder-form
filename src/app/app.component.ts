@@ -11,8 +11,7 @@ export class AppComponent {
   title = 'salesorder';
 
   toggleButton: boolean;
-  isOnIndex:boolean = false;
-
+  isOnIndex: boolean = false;
 
   numberOnlyRegex = '/[0-9]+$/g';
 
@@ -43,7 +42,24 @@ export class AppComponent {
     tax1: new FormControl(null, [Validators.required]),
     tax2: new FormControl(null, [Validators.required]),
 
-    products: new FormArray([]),
+    products: new FormArray([
+      new FormGroup({
+        productId: new FormControl(null),
+        qnt: new FormControl(null),
+        mrp: new FormControl(null),
+        rate: new FormControl(null),
+        dis1: new FormControl(null),
+        disamt1: new FormControl(null),
+        dis2: new FormControl(null),
+        disamt2: new FormControl(null),
+        amnt: new FormControl(null),
+        tax1: new FormControl(null),
+        tax2: new FormControl(null),
+        tax1amt: new FormControl(null),
+        tax2amt: new FormControl(null),
+        btnToggle: new FormControl(false),
+      }),
+    ]),
     quantity: new FormControl(0, [Validators.required]),
     amount: new FormControl(0, [Validators.required]),
     discountAmount: new FormControl(0, [Validators.required]),
@@ -155,17 +171,16 @@ export class AppComponent {
     this.salesOrder.get('orderDate').disable();
   }
 
-  toggleForm(index: number) { 
-    // const formArray = this.salesOrder.get('products') as FormArray;
-    // const productControls = formArray.controls[index];
-    
-    // const value = productControls.get('btnToggle').value;
-    // productControls.get('btnToggle').setValue(!value);  
-    
+  toggleForm(index: number) {
+    const formArray = this.salesOrder.get('products') as FormArray;
+    const productControls = formArray.controls[index];
 
-    const value = this.salesOrder.get('showForm').value;
-    this.salesOrder.get('showForm').setValue(!value);  
-    this.toggleButton = !this.toggleButton;
+    const value = productControls.get('btnToggle').value;
+    productControls.get('btnToggle').setValue(!value);
+
+    // const value = this.salesOrder.get('showForm').value;
+    // this.salesOrder.get('showForm').setValue(!value);
+    // this.toggleButton = !this.toggleButton;
   }
 
   onDelete(index: number) {
@@ -173,10 +188,12 @@ export class AppComponent {
     if (productsFormArray.length > 0) {
       productsFormArray.removeAt(index);
     }
+
+    this.grandTotal()
   }
 
   get productsControls() {
-    return (this.salesOrder.get('products') as FormArray).controls;    
+    return (this.salesOrder.get('products') as FormArray).controls;
   }
 
   getControls() {
@@ -201,7 +218,6 @@ export class AppComponent {
     });
 
     this.grandTotal();
-    
   }
 
   onQntChange(index: number) {
@@ -218,7 +234,6 @@ export class AppComponent {
     this.onTax2Change(index);
     this.grandTotal();
   }
-
 
   onDiscount1Change(index: number) {
     const formArray = this.salesOrder.get('products') as FormArray;
@@ -295,20 +310,20 @@ export class AppComponent {
     let discountAmount = 0;
     let taxAmount = 0;
 
-    formArray.controls.forEach((control: FormControl) => { 
+    formArray.controls.forEach((control: FormControl) => {
       qnt += +control.get('qnt').value;
       amount += +control.get('amnt').value;
       discountAmount += +control.get('disamt1').value + +control.get('disamt2').value;
       taxAmount += +control.get('tax1amt').value + +control.get('tax2amt').value;
     });
 
-    this.salesOrder.get('quantity').setValue(qnt);
-    this.salesOrder.get('amount').setValue(amount);
-    this.salesOrder.get('discountAmount').setValue(discountAmount);
-    this.salesOrder.get('taxAmount').setValue(taxAmount);
+    this.salesOrder.get('quantity').setValue(qnt.toFixed(2));
+    this.salesOrder.get('amount').setValue(amount.toFixed(2));
+    this.salesOrder.get('discountAmount').setValue(discountAmount.toFixed(2));
+    this.salesOrder.get('taxAmount').setValue(taxAmount.toFixed(2));
 
     const totalValue = amount - discountAmount + taxAmount;
-    this.salesOrder.get('totalAmount').setValue(totalValue);
+    this.salesOrder.get('totalAmount').setValue(totalValue.toFixed(2));
   }
 
   onAddProduct() {
@@ -329,10 +344,9 @@ export class AppComponent {
         tax2: new FormControl(null),
         tax1amt: new FormControl(null),
         tax2amt: new FormControl(null),
-        btnToggle: new FormControl({ value: false })
+        btnToggle: new FormControl(false)
       })
     );
-
   }
 
   onSubmit() {
