@@ -135,18 +135,16 @@
                   <label for="amnt" class="form-label">Amount<span>*</span></label>
                   <input type="text" class="form-control" id="amnt" formControlName="amnt" />
                 </div>
-                <div class="col col-md-2 col-lg-2" >
+                <div class="col col-md-2 col-lg-2">
                   <button class="btn mt border-danger ml-5 mr-3" (click)="onDelete(i)">
                     <span><i class="far fa-trash-alt"></i></span>
                   </button>
-                  <button *ngIf="!isOnIndex"
-                  class="btn mt border-primary iconColor" 
-                  (click)="toggleForm()">
+                  <button *ngIf="!isOnIndex" class="btn mt border-primary iconColor" (click)="toggleForm(i)">
                     <i
                       class="fas"
                       [ngClass]="{
-                        'fa-chevron-down': !toggleButton,
-                        'fa-chevron-up': toggleButton
+                        'fa-chevron-down': !productsControl.get('btnToggle').value,
+                        'fa-chevron-up': productsControl.get('btnToggle').value
                       }"
                     >
                     </i>
@@ -154,8 +152,7 @@
                 </div>
               </div>
             </div>
-            <!-- productsControls.get('btnToggle').value     salesOrder.get('showForm').value -->
-            <ng-container *ngIf="salesOrder.get('showForm').value">
+            <ng-container *ngIf="productsControl.get('btnToggle').value">
               <div class="row">
                 <div class="col">
                   <label for="dis1" class="form-label">Dis 1 %<span>*</span></label>
@@ -198,24 +195,24 @@
       <div class="mb-3 font-weight-bold">
         <div class="d-flex justify-content-between align-items-center">
           <div>Quantity</div>
-          <div>{{ salesOrder.get('quantity').value }}</div>
+          <div>{{ salesOrder.get("quantity").value || '0.00' }}</div>
         </div>
         <div class="d-flex justify-content-between align-items-center">
           <div>Amount</div>
-          <div>{{ salesOrder.get("amount").value }}</div>
+          <div>{{ salesOrder.get("amount").value || '0.00' }}</div>
         </div>
         <div class="d-flex justify-content-between align-items-center">
           <div>Discount Amount</div>
-          <div>{{ salesOrder.get("discountAmount").value }}</div>
+          <div>{{ salesOrder.get("discountAmount").value || '0.00' }}</div>
         </div>
         <div class="d-flex justify-content-between align-items-center">
           <div>Tax Amount</div>
-          <div>{{ salesOrder.get("taxAmount").value }}</div>
+          <div>{{ salesOrder.get("taxAmount").value || '0.00' }}</div>
         </div>
         <hr />
         <div class="d-flex justify-content-between align-items-center">
           <div>Total Amount</div>
-          <div>{{ salesOrder.get("totalAmount").value }}</div>
+          <div>{{ salesOrder.get("totalAmount").value || '0.00' }}</div>
         </div>
         <div class="d-flex justify-content-end align-items-end">
           <button class="btn btn-primary mt-2" [disabled]="salesOrder.invalid" (click)="onSubmit()">Submit</button>
