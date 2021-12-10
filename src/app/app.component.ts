@@ -344,7 +344,11 @@ export class AppComponent {
         tax2: new FormControl(null),
         tax1amt: new FormControl(null),
         tax2amt: new FormControl(null),
+<<<<<<< HEAD
         btnToggle: new FormControl(false),
+=======
+        btnToggle: new FormControl({ value: false })
+>>>>>>> 483d93828cddf6f57adf163d022a7d9cddc6e60b
       })
     );
   }
