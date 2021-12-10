@@ -329,7 +329,7 @@ export class AppComponent {
         tax2: new FormControl(null),
         tax1amt: new FormControl(null),
         tax2amt: new FormControl(null),
-        btnToggle: new FormControl(null)
+        btnToggle: new FormControl({ value: false })
       })
     );
 
