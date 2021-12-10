@@ -20,12 +20,20 @@ label {
 }
 
 span {
-    color: red;
+    color: #ff0202;
+}
+
+.mt {
+    margin-top: 2rem;
+}
+
+.iconColor {
+    color: #32a9ee;
 }
 
 .btn2 {
     /* border-radius: 12px; */
-    padding-top: 3px;
-    padding-bottom: 0;
+    /* padding-top: 3px;
+    padding-bottom: 0; */
 }
 
