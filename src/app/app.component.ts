@@ -156,16 +156,16 @@ export class AppComponent {
   }
 
   toggleForm(index: number) { 
-    const formArray = this.salesOrder.get('products') as FormArray;
-    const productControls = formArray.controls[index];
+    // const formArray = this.salesOrder.get('products') as FormArray;
+    // const productControls = formArray.controls[index];
     
-    const value = productControls.get('btnToggle').value;
-    productControls.get('btnToggle').setValue(!value);  
+    // const value = productControls.get('btnToggle').value;
+    // productControls.get('btnToggle').setValue(!value);  
     
 
-    // const value = this.salesOrder.get('showForm').value;
-    // this.salesOrder.get('showForm').setValue(!value);  
-    // this.toggleButton = !this.toggleButton;
+    const value = this.salesOrder.get('showForm').value;
+    this.salesOrder.get('showForm').setValue(!value);  
+    this.toggleButton = !this.toggleButton;
   }
 
   onDelete(index: number) {
