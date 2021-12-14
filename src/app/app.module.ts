@@ -4,12 +4,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { NgbAccordionModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, ReactiveFormsModule ,AppRoutingModule, RouterModule, NgbModule, NgbAccordionModule],
+  imports: [BrowserModule, ReactiveFormsModule ,AppRoutingModule, RouterModule, NgbModule],
   providers: [],
   bootstrap: [AppComponent],
 })

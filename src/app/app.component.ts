@@ -1,4 +1,3 @@
-import { logging } from 'protractor';
 import { Component } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -85,6 +84,12 @@ export class AppComponent {
     { id: 3, salesmanName: 'salesman3' },
     { id: 4, salesmanName: 'salesman4' },
   ];
+  hastNames = [
+    { id: 1, hastNm: 'hastName-1' },
+    { id: 2, hastNm: 'hastName-2' },
+    { id: 3, hastNm: 'hastName-3' },
+    { id: 4, hastNm: 'hastName-4' },
+  ];
 
   brokers = [
     { id: 1, brokerName: 'broker1' },
@@ -135,7 +140,9 @@ export class AppComponent {
     },
   ];
 
-  ngOnInit() {}
+  ngOnInit() {
+   
+  }
 
   onPartyChange() {
     // ADDRESS LOGIC
@@ -152,12 +159,21 @@ export class AppComponent {
       }
     });
     // DELIVERY DATE LOGIC
-    const dueDays = this.salesOrder.get('dueDays').value;
+    const dueDays = +this.salesOrder.get('dueDays').value;
     const orderDate = this.salesOrder.get('orderDate').value.split('-');
     const orderDateFormat = new Date(`${orderDate[2]}-${orderDate[1]}-${orderDate[0]}`);
     const deliveryDate = orderDateFormat.setDate(orderDateFormat.getDate() + dueDays);
     const actualDeliveryDate = new Date(deliveryDate).toISOString().slice(0, 10).split('-');
     this.salesOrder.get('deliveryDate').setValue(`${actualDeliveryDate[2]}-${actualDeliveryDate[1]}-${actualDeliveryDate[0]}`);
+  }
+
+  onDueDayschange() {
+    const dueDays = +this.salesOrder.get('dueDays').value;
+    const orderDate = this.salesOrder.get('orderDate').value.split('-');
+    const orderDateFormat = new Date(`${orderDate[2]}-${orderDate[1]}-${orderDate[0]}`);
+    const deliveryDate = orderDateFormat.setDate(orderDateFormat.getDate() + dueDays);
+    const actualDate = new Date(deliveryDate).toISOString().slice(0, 10).split('-');
+    this.salesOrder.get('deliveryDate').setValue(`${actualDate[2]}-${actualDate[1]}-${actualDate[0]}`);
   }
 
   onBookChange() {
@@ -181,10 +197,12 @@ export class AppComponent {
 
   onDelete(index: number) {
     const productsFormArray = this.salesOrder.get('products') as FormArray;
-    if (productsFormArray.length > 0) {
+    let result = confirm('Are You Sure ⚠');
+    if(result === false) {
+      event.preventDefault();
+    } else if (productsFormArray.length > 0) {
       productsFormArray.removeAt(index);
     }
-
     this.grandTotal()
   }
 
@@ -212,7 +230,6 @@ export class AppComponent {
         productControls.get('qnt').setValue(1);
       }
     });
-
     this.grandTotal();
   }
 
@@ -220,7 +237,7 @@ export class AppComponent {
     const formArray = this.salesOrder.get('products') as FormArray;
     const productControls = formArray.controls[index];
 
-    // AMOUNT OF THE PRODUCT
+    // AMOUNT OF THE PRODUCT   
     const qnt = +productControls.get('qnt').value;
     const rate = +productControls.get('rate').value;
     const amount = qnt * rate;
@@ -310,7 +327,7 @@ export class AppComponent {
       qnt += +control.get('qnt').value;
       amount += +control.get('amnt').value;
       discountAmount += +control.get('disamt1').value + +control.get('disamt2').value;
-      taxAmount += +control.get('tax1amt').value + +control.get('tax2amt').value;
+      taxAmount += (+control.get('tax1amt').value + +control.get('tax2amt').value)*qnt;
     });
 
     this.salesOrder.get('quantity').setValue(qnt.toFixed(2));
