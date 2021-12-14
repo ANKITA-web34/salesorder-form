@@ -49,8 +49,10 @@ export class AppComponent {
         rate: new FormControl(null),
         dis1: new FormControl(null),
         disamt1: new FormControl(null),
+        disamt1Value: new FormControl(null),
         dis2: new FormControl(null),
         disamt2: new FormControl(null),
+        disamt2Value: new FormControl(null),
         amnt: new FormControl(null),
         tax1: new FormControl(null),
         tax2: new FormControl(null),
@@ -140,9 +142,7 @@ export class AppComponent {
     },
   ];
 
-  ngOnInit() {
-   
-  }
+  ngOnInit() {}
 
   onPartyChange() {
     // ADDRESS LOGIC
@@ -198,12 +198,12 @@ export class AppComponent {
   onDelete(index: number) {
     const productsFormArray = this.salesOrder.get('products') as FormArray;
     let result = confirm('Are You Sure ⚠');
-    if(result === false) {
+    if (result === false) {
       event.preventDefault();
     } else if (productsFormArray.length > 0) {
       productsFormArray.removeAt(index);
     }
-    this.grandTotal()
+    this.grandTotal();
   }
 
   get productsControls() {
@@ -237,7 +237,7 @@ export class AppComponent {
     const formArray = this.salesOrder.get('products') as FormArray;
     const productControls = formArray.controls[index];
 
-    // AMOUNT OF THE PRODUCT   
+    // AMOUNT OF THE PRODUCT
     const qnt = +productControls.get('qnt').value;
     const rate = +productControls.get('rate').value;
     const amount = qnt * rate;
@@ -327,7 +327,7 @@ export class AppComponent {
       qnt += +control.get('qnt').value;
       amount += +control.get('amnt').value;
       discountAmount += +control.get('disamt1').value + +control.get('disamt2').value;
-      taxAmount += (+control.get('tax1amt').value + +control.get('tax2amt').value)*qnt;
+      taxAmount += (+control.get('tax1amt').value + +control.get('tax2amt').value) * qnt;
     });
 
     this.salesOrder.get('quantity').setValue(qnt.toFixed(2));
@@ -350,16 +350,78 @@ export class AppComponent {
         rate: new FormControl(null),
         dis1: new FormControl(null),
         disamt1: new FormControl(null),
+        disamt1Value: new FormControl(null),
         dis2: new FormControl(null),
         disamt2: new FormControl(null),
+        disamt2Value: new FormControl(null),
         amnt: new FormControl(null),
         tax1: new FormControl(null),
         tax2: new FormControl(null),
         tax1amt: new FormControl(null),
         tax2amt: new FormControl(null),
-        btnToggle: new FormControl(false)
+        btnToggle: new FormControl(false),
       })
     );
+  }
+
+  calculate(index: number) {
+    const formArray = this.salesOrder.get('products') as FormArray;
+    const productControls = formArray.controls[index];
+
+    const qnt = +productControls.get('qnt').value;
+
+    // DISCOUNT 1 CHANGE LOGIC
+    const dis1Per = +productControls.get('dis1').value;
+    const mrp = +productControls.get('mrp').value;
+    const disAmt1 = ((mrp * dis1Per) / 100);
+    const disAmt1Value = (mrp - disAmt1) * qnt;
+    const disAmt1Rate = mrp - disAmt1;
+
+    productControls.get('disamt1').setValue(disAmt1 * qnt);
+    productControls.get('disamt1Value').setValue(disAmt1Value);
+    productControls.get('disamt1').disable();
+    productControls.get('rate').setValue(disAmt1Rate);
+
+    // DISCOUNT 2 CHANGE LOGIC
+    const dis2Per = +productControls.get('dis2').value;
+
+    if (dis2Per) {
+      const disAmt2 = ((dis2Per / 100) * disAmt1Rate);
+      const disAmt2Value = (mrp - disAmt2) * qnt;
+      const disAmt2Rate = mrp - (disAmt1 + disAmt2);
+
+      productControls.get('disamt2').setValue(disAmt2 * qnt);
+      productControls.get('disamt2Value').setValue(disAmt2Value);
+      productControls.get('disamt2').disable();
+      productControls.get('rate').setValue(disAmt2Rate);
+    } else {
+      productControls.get('disamt2').setValue(0);
+      productControls.get('disamt2').disable();
+    }
+
+    // QUANTITY CHANGE LOGIC
+    const rateValue = +productControls.get('rate').value;
+    const amount = qnt * rateValue;
+    productControls.get('amnt').setValue(amount);
+
+    // TAX 1 CHANGE
+    const productAmount = +productControls.get('amnt').value;
+    const tax1Per = +productControls.get('tax1').value;
+    const tax1Amnt = (tax1Per * productAmount) / 100;
+    console.log(tax1Amnt);
+    productControls.get('tax1amt').setValue(tax1Amnt);
+
+    // TAX 2 CHANGE
+    if (tax1Amnt) {
+      const tax2Per = +productControls.get('tax2').value;
+      const tax2Amt = (tax2Per * tax1Amnt) / 100;
+      console.log(tax2Amt);
+      productControls.get('tax2amt').setValue(tax2Amt);
+    } else {
+      productControls.get('tax2amt').setValue(0);
+    }
+
+    this.grandTotal();
   }
 
   onSubmit() {
