@@ -126,7 +126,7 @@
                 <div class="col col-md-2 col-lg-2">
                   <label for="productId" class="form-label">Product<span>*</span></label>
                   <input type="text" class="form-control" id="productId" formControlName="productId" (change)="onProductChange(i)" />
-                  <app-control-messages [control]="salesOrder.get('productId')" [message]="{ required: '*Product Id Type Is Required ⚠' }"></app-control-messages>
+                  <app-control-messages [control]="productsControl.get('productId')" [message]="{ required: '*Id Is Required ⚠' }"></app-control-messages>
                 </div>
                 <div class="col col-md-2 col-lg-2">
                   <label for="mrp" class="form-label">MRP<span>*</span></label>
