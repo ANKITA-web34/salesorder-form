@@ -18,14 +18,14 @@ export class AppComponent {
 
   salesOrder = new FormGroup({
     party: new FormControl(null, [Validators.required]),
-    address: new FormControl({ value: null, disabled: true }, [Validators.required]),
+    address: new FormControl({ value: null, disabled: true }),
     book: new FormControl(null, [Validators.required]),
     orderType: new FormControl(null, [Validators.required]),
     taxType: new FormControl(null, [Validators.required]),
     orderId: new FormControl(null, [Validators.required]),
     orderDate: new FormControl({ value: `${this.orderDate[2]}-${this.orderDate[1]}-${this.orderDate[0]}`, disabled: true }, [Validators.required]),
     deliveryDate: new FormControl(null, [Validators.required]),
-    challan: new FormControl(null, [Validators.required]),
+    challan: new FormControl(null),
 
     // FIND PRODUCT FORM
     showForm: new FormControl(false),
@@ -34,16 +34,16 @@ export class AppComponent {
     rate: new FormControl(0, [Validators.required]),
     qnt: new FormControl(null, [Validators.required]),
     amnt: new FormControl(null, [Validators.required]),
-    dis1: new FormControl(null, [Validators.required]),
-    disamt1: new FormControl(null, [Validators.required]),
-    dis2: new FormControl(null, [Validators.required]),
-    disamt2: new FormControl(null, [Validators.required]),
-    tax1: new FormControl(null, [Validators.required]),
-    tax2: new FormControl(null, [Validators.required]),
+    dis1: new FormControl(null),
+    disamt1: new FormControl(null),
+    dis2: new FormControl(null),
+    disamt2: new FormControl(null),
+    tax1: new FormControl(null),
+    tax2: new FormControl(null),
 
     products: new FormArray([
       new FormGroup({
-        productId: new FormControl(null),
+        productId: new FormControl(null,  [Validators.required]),
         qnt: new FormControl(null),
         mrp: new FormControl(null),
         rate: new FormControl(null),
