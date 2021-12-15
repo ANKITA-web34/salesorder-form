@@ -11,6 +11,7 @@
             <option [value]="party.id">{{ party.partyName }}</option>
           </ng-container>
         </select>
+        <app-control-messages [control]="salesOrder.get('party')" [message]="{ required: '*Party Is Required ⚠' }"></app-control-messages>
       </div>
       <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Address<span>*</span></label>
@@ -24,6 +25,7 @@
               <option [value]="book.id">{{ book.value }}</option>
             </ng-container>
           </select>
+          <app-control-messages [control]="salesOrder.get('book')" [message]="{ required: '*Book Is Required ⚠' }"></app-control-messages>
         </div>
         <div class="col">
           <label for="orderType" class="form-label">Order Type<span>*</span></label>
@@ -32,6 +34,7 @@
               <option [value]="order.id">{{ order.orderType }}</option>
             </ng-container>
           </select>
+          <app-control-messages [control]="salesOrder.get('orderType')" [message]="{ required: '*Order Type Is Required ⚠' }"></app-control-messages>
         </div>
         <div class="col">
           <label for="taxType" class="form-label">Tax Type<span>*</span></label>
@@ -40,12 +43,14 @@
               <option [value]="tax.id">{{ tax.value }}</option>
             </ng-container>
           </select>
+          <app-control-messages [control]="salesOrder.get('taxType')" [message]="{ required: '*Tax Type Is Required ⚠' }"></app-control-messages>
         </div>
       </div>
       <div class="row mb-3">
         <div class="col">
           <label for="orderId" class="form-label">OrderId<span>*</span></label>
           <input type="text" class="form-control" id="orderId" formControlName="orderId" />
+          <app-control-messages [control]="salesOrder.get('orderId')" [message]="{ required: '*Order Id Is Required ⚠' }"></app-control-messages>
         </div>
         <div class="col">
           <label for="orderDate" class="form-label">Order Date<span>*</span></label>
@@ -100,7 +105,6 @@
           <input type="text" class="form-control" id="transPort" formControlName="transPort" />
         </div>
       </div>
-
       <ng-container>
         <div class="color mt-2">
           <h4>Products</h4>
@@ -122,6 +126,7 @@
                 <div class="col col-md-2 col-lg-2">
                   <label for="productId" class="form-label">Product<span>*</span></label>
                   <input type="text" class="form-control" id="productId" formControlName="productId" (change)="onProductChange(i)" />
+                  <app-control-messages [control]="salesOrder.get('productId')" [message]="{ required: '*Product Id Type Is Required ⚠' }"></app-control-messages>
                 </div>
                 <div class="col col-md-2 col-lg-2">
                   <label for="mrp" class="form-label">MRP<span>*</span></label>
@@ -157,6 +162,7 @@
               </div>
             </div>
             <ng-container *ngIf="productsControl.get('btnToggle').value">
+              <div class="border px-3 py-3">
               <div class="row">
                 <div class="col">
                   <label for="dis1" class="form-label">Dis 1 %<span>*</span></label>
@@ -187,6 +193,7 @@
                   <input type="text" class="form-control" id="tax2" formControlName="tax2" (change)="calculate(i)" />
                 </div>
               </div>
+            </div>
             </ng-container>
           </ng-container>
         </ng-container>
