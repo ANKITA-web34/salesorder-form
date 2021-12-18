@@ -7,9 +7,11 @@ import { ControlMessagesComponent } from './errorMsg';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ImageUploadComponent } from './image-upload/image-upload.component';
+import { ImageDragDirective } from './image-drag.directive';
 
 @NgModule({
-  declarations: [AppComponent, ControlMessagesComponent],
+  declarations: [AppComponent, ControlMessagesComponent, ImageUploadComponent, ImageDragDirective],
   imports: [BrowserModule, ReactiveFormsModule ,AppRoutingModule, RouterModule, NgbModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],

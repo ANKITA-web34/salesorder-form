@@ -1,0 +1,11 @@
+<div class="container py-3">
+  <div class="dragContainer" appImageDrag (files)="filesDropped($event)">
+    <span style="font-size: 25px">Drop your image here</span>
+  </div>
+  <div style="padding: 62px;">
+    <div class="Imgcontainer" *ngFor="let file of uploadedFiles">
+      <img draggable="true" [src]="file.url" id="image" />
+    </div>
+  </div>
+</div>
+

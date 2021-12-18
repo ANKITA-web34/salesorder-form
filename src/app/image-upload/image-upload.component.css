@@ -1,0 +1,26 @@
+  body {
+    text-align: center;
+  }
+
+  #image {
+    width: 150px;
+    height: 150px;
+    margin: 5px;
+    border: 1px solid #333;
+    box-shadow: 4px 1px 6px #7a7a79;
+  }
+
+  .dragContainer {
+    height: 100px;
+    text-align: center;
+    height: 250px;
+    width: auto;
+    padding: 5rem;
+  }
+
+  .Imgcontainer {
+    display: contents;
+   
+  }
+  
+
