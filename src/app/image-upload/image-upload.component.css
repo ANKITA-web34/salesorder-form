@@ -5,9 +5,9 @@
   #image {
     width: 150px;
     height: 150px;
-    margin: 5px;
-    border: 1px solid #333;
+    margin: 7px;
     box-shadow: 4px 1px 6px #7a7a79;
+    border-radius: 5px;
   }
 
   .dragContainer {
@@ -19,8 +19,40 @@
   }
 
   .Imgcontainer {
-    display: contents;
-   
+    display: inline-block;  
+    position: relative; 
+  }
+
+  .buttonContainer {
+    position: absolute;
+    top: 8px;
+    left: 0;
   }
   
+  .btnEdit {
+    /* margin-right: 7rem; */
+    margin-left: 10px;
+    background: royalblue;
+    color: #fff;
+    border-radius: 14px;
+    height: 1.9rem;
+    width: 2rem;
+    text-align: center;
+    padding: 3px;
 
+  }
+
+  .btnRemove {
+    margin-left: 5rem;
+    border-radius: 14px;
+    background: red;
+    color: #fff;
+    height: 1.9rem;
+    width: 2rem;
+    text-align: center;
+    padding: 3px;
+  }
+
+  .hidden {
+    visibility: hidden;
+  }

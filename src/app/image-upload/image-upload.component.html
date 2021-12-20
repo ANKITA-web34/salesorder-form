@@ -2,10 +2,19 @@
   <div class="dragContainer" appImageDrag (files)="filesDropped($event)">
     <span style="font-size: 25px">Drop your image here</span>
   </div>
-  <div style="padding: 62px;">
-    <div class="Imgcontainer" *ngFor="let file of uploadedFiles">
+  <div style="padding: 62px">
+    <div class="Imgcontainer" *ngFor="let file of uploadedFiles; let i = index">
+      <div class="buttonContainer d-flex">
+        <div class="btnEdit" (click)="handleClick(i)">
+          <i class="far fa-edit"></i>
+          <input class="hidden" type="file" id="upload-file" accept=".jpg, .jpeg, .png" name="upload-file" />
+        </div>
+        <div class="btnRemove"><i class="fas fa-times-circle" (click)="onDelete(i)"></i></div>
+      </div>
       <img draggable="true" [src]="file.url" id="image" />
     </div>
   </div>
 </div>
 
+<!-- <a (click)="handleClick()"><i class="far fa-edit"></i></a>      
+          <input class="hidden" type="file" id="upload-file" name="upload-file" ngf-max-size="2MB" (change)="addAttachment($event)"> -->
