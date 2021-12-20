@@ -53,6 +53,11 @@ export class ImageUploadComponent implements OnInit {
       }
     );
   }
+  onDragContainerClick() {
+    console.log("called on drag container")
+    const uploadImg = document.getElementById('drag-file-upload');
+    uploadImg.click();
+  }
 
   onDelete(i: number) {
     this.uploadedFiles.splice(i,1);

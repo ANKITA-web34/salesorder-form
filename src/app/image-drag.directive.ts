@@ -1,9 +1,10 @@
-import { Directive, HostListener, EventEmitter, Output, HostBinding } from '@angular/core';
+import { Directive, HostListener, EventEmitter, Output, HostBinding, Input } from '@angular/core';
 import { FileHandle } from './file-handle';
 import { DomSanitizer } from '@angular/platform-browser';
 @Directive({ selector: '[appImageDrag]' })
 export class ImageDragDirective {
   @Output('files') files: EventEmitter<FileHandle[]> = new EventEmitter();
+  @Input() callOnChange: boolean = false;
   @HostBinding('style.background') public background = '#eee';
   constructor(private sanitizer: DomSanitizer) {}
   @HostListener('dragover', ['$event']) public onDragOver(evt: DragEvent) {
@@ -28,6 +29,23 @@ export class ImageDragDirective {
     }
     if (files.length > 0) {
       this.files.emit(files);
+    }
+  }
+
+  @HostListener('change', ['$event']) public onClick(evt: any) {
+    console.log(this.callOnChange);
+    if (this.callOnChange) {
+      console.log('change called');
+      this.background = '#eee';
+      let files: FileHandle[] = [];
+      for (let i = 0; i < evt.target.files.length; i++) {
+        const file = evt.target.files[i];
+        const url = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
+        files.push({ file, url });
+      }
+      if (files.length > 0) {
+        this.files.emit(files);
+      }
     }
   }
 }

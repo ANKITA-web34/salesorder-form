@@ -1,7 +1,7 @@
-<div class="container py-3">
-  <div class="dragContainer" appImageDrag (files)="filesDropped($event)">
-    <span style="font-size: 25px">Drop your image here</span>
-  </div>
+<div class="container py-3" >
+    <div class="dragContainer" (click)="onDragContainerClick()" appImageDrag [callOnChange]="false" (files)="filesDropped($event)">
+      <span style="font-size: 25px">Drop your image here</span>
+    </div>
   <div style="padding: 62px">
     <div class="Imgcontainer" *ngFor="let file of uploadedFiles; let i = index">
       <div class="buttonContainer d-flex">
@@ -15,6 +15,5 @@
     </div>
   </div>
 </div>
+<input class="hidden" type="file" id="drag-file-upload" accept=".jpg, .jpeg, .png" multiple="true" appImageDrag name="drag-file-upload" (files)="filesDropped($event)" [callOnChange]="true"/>
 
-<!-- <a (click)="handleClick()"><i class="far fa-edit"></i></a>      
-          <input class="hidden" type="file" id="upload-file" name="upload-file" ngf-max-size="2MB" (change)="addAttachment($event)"> -->
