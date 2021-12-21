@@ -1,0 +1,39 @@
+.container {
+    background: #fafafa;
+}
+
+.classMr {
+    margin-right: 20px;
+}
+
+.color {
+    color: #06609c;
+}
+ 
+.form-control {
+    background: #e8e7f8;
+    color: black;
+}
+
+label {
+    color: #c5c4c4;
+}
+
+span {
+    color: #ff0202;
+}
+
+.mt {
+    margin-top: 2rem;
+}
+
+.iconColor {
+    color: #32a9ee;
+}
+
+.btn2 {
+    /* border-radius: 12px; */
+    /* padding-top: 3px;
+    padding-bottom: 0; */
+}
+

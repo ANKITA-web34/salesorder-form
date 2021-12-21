@@ -1,6 +1,7 @@
 <div class="container py-3" >
     <div class="dragContainer" (click)="onDragContainerClick()" appImageDrag [callOnChange]="false" (files)="filesDropped($event)">
       <span style="font-size: 25px">Drop your image here</span>
+      <input class="hidden" type="file" id="drag-file-upload" accept=".jpg, .jpeg, .png" multiple="true" appImageDrag name="drag-file-upload" (files)="filesDropped($event)" [callOnChange]="true"/>
     </div>
   <div style="padding: 62px">
     <div class="Imgcontainer" *ngFor="let file of uploadedFiles; let i = index">
@@ -9,11 +10,11 @@
           <i class="far fa-edit"></i>
           <input class="hidden" type="file" id="upload-file" accept=".jpg, .jpeg, .png" name="upload-file" />
         </div>
-        <div class="btnRemove"><i class="fas fa-times-circle" (click)="onDelete(i)"></i></div>
+        <div class="btnRemove" (click)="onDelete(i)"><i class="fas fa-times-circle"></i></div>
       </div>
       <img draggable="true" [src]="file.url" id="image" />
     </div>
   </div>
 </div>
-<input class="hidden" type="file" id="drag-file-upload" accept=".jpg, .jpeg, .png" multiple="true" appImageDrag name="drag-file-upload" (files)="filesDropped($event)" [callOnChange]="true"/>
 
+<a [routerLink]="['/']">Home</a>

@@ -9,9 +9,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { ImageDragDirective } from './image-drag.directive';
+import { FormComponent } from './form/form.component';
 
 @NgModule({
-  declarations: [AppComponent, ControlMessagesComponent, ImageUploadComponent, ImageDragDirective],
+  declarations: [AppComponent, ControlMessagesComponent, ImageUploadComponent, ImageDragDirective, FormComponent],
   imports: [BrowserModule, ReactiveFormsModule ,AppRoutingModule, RouterModule, NgbModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
