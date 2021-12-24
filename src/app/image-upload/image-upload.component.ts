@@ -1,6 +1,6 @@
 import { FileHandle } from './../file-handle';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import {
   CdkDragDrop,
   CdkDragEnter,
