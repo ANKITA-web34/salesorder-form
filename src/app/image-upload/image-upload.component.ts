@@ -1,6 +1,13 @@
 import { FileHandle } from './../file-handle';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import {
+  CdkDragDrop,
+  CdkDragEnter,
+  CdkDragMove,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
+
 
 @Component({
   selector: 'app-image-upload',
@@ -8,17 +15,84 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   styleUrls: ['./image-upload.component.css'],
 })
 export class ImageUploadComponent implements OnInit {
-  uploadedFiles: FileHandle[] = [];
+  // uploadedFiles: FileHandle[] = [];
 
   count: number = 0;
 
   constructor(private sanitizer: DomSanitizer) {}
   ngOnInit(): void {}
 
+  public items: FileHandle[] = [];;
+
+  @ViewChild('dropListContainer') dropListContainer?: ElementRef;
+
+  dropListReceiverElement?: HTMLElement;
+  dragDropInfo?: {
+    dragIndex: number;
+    dropIndex: number;
+  };
+
+  /* For rearreng the images */
+
+  dragEntered(event: CdkDragEnter<number>) {
+
+    const drag = event.item;
+    const dropList = event.container;
+    const dragIndex = drag.data;
+    const dropIndex = dropList.data;
+
+    this.dragDropInfo = { dragIndex, dropIndex };
+
+    const phContainer = dropList.element.nativeElement;
+    const phElement = phContainer.querySelector('.cdk-drag-placeholder');
+
+    if (phElement) {
+      phContainer.removeChild(phElement);
+      phContainer.parentElement?.insertBefore(phElement, phContainer);
+      moveItemInArray(this.items, dragIndex, dropIndex);
+    }
+  }
+
+  dragMoved(event: CdkDragMove<number>) {
+    console.log(event);
+    if (!this.dropListContainer || !this.dragDropInfo) return;
+
+    const placeholderElement =
+      this.dropListContainer.nativeElement.querySelector(
+        '.cdk-drag-placeholder'
+      );
+
+    const receiverElement =
+      this.dragDropInfo.dragIndex > this.dragDropInfo.dropIndex
+        ? placeholderElement?.nextElementSibling
+        : placeholderElement?.previousElementSibling;
+
+    if (!receiverElement) {
+      return;
+    }
+
+    receiverElement.style.display = 'none';
+    this.dropListReceiverElement = receiverElement;
+  }
+
+  dragDropped(event: CdkDragDrop<number>) {
+    if (!this.dropListReceiverElement) {
+      return;
+    }
+
+    this.dropListReceiverElement.style.removeProperty('display');
+    this.dropListReceiverElement = undefined;
+    this.dragDropInfo = undefined;
+  }
+  
+
+  /***************************************************************/
+  /* For Drag and Drop Functionality */
+
   filesDropped(files: FileHandle[]) {
     if (files.length > 0) {
       files.forEach((element) => {
-        this.uploadedFiles.push(element);
+        this.items.push(element);
       });
     }
   }
@@ -26,7 +100,7 @@ export class ImageUploadComponent implements OnInit {
   addAttachment(i: number, files: any) {
     const file = files[0];
     const url = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
-    this.uploadedFiles[i] = {
+    this.items[i] = {
       file,
       url,
     };
@@ -60,6 +134,6 @@ export class ImageUploadComponent implements OnInit {
   }
 
   onDelete(i: number) {
-    this.uploadedFiles.splice(i,1);
+    this.items.splice(i,1);
   }
 }

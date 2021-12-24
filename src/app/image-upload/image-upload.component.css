@@ -1,4 +1,4 @@
-  body {
+   body {
     text-align: center;
   }
 
@@ -8,6 +8,12 @@
     margin: 7px;
     box-shadow: 4px 1px 6px #7a7a79;
     border-radius: 5px;
+  }
+
+  #image:visited {
+    height: 150px;
+    width: 150px;
+    opacity: 2;
   }
 
   .dragContainer {
@@ -29,7 +35,7 @@
     left: 0;
   }
   
-  .btnEdit {
+  .btnEdit { 
     /* margin-right: 7rem; */
     margin-left: 10px;
     background: royalblue;
@@ -39,7 +45,6 @@
     width: 2rem;
     text-align: center;
     padding: 3px;
-
   }
 
   .btnRemove {
@@ -55,4 +60,19 @@
 
   .hidden {
     visibility: hidden;
+  } 
+
+ 
+  .example-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    
+    gap: 10px;
+    margin: 10px;
+    height: 150px;
+    width: 100px;
+    cursor:move;
+    
   }
+  

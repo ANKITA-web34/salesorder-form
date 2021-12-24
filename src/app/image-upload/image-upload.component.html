@@ -1,18 +1,19 @@
 <div class="container py-3" >
     <div class="dragContainer" (click)="onDragContainerClick()" appImageDrag [callOnChange]="false" (files)="filesDropped($event)">
-      <span style="font-size: 25px">Drop your image here</span>
-      <input class="hidden" type="file" id="drag-file-upload" accept=".jpg, .jpeg, .png" multiple="true" appImageDrag name="drag-file-upload" (files)="filesDropped($event)" [callOnChange]="true"/>
+      <span style="font-size: 25px">Drop your image here</span><br>
+      <input class="hidden" type="file" id="drag-file-upload" ngf-max-width="500" ngf-max-height="500" ngf-max-size="2MB" accept=".jpg, .jpeg, .png" multiple="true" appImageDrag name="drag-file-upload" (files)="filesDropped($event)" [callOnChange]="true"/>
     </div>
-  <div style="padding: 62px">
-    <div class="Imgcontainer" *ngFor="let file of uploadedFiles; let i = index">
+  <div style="padding: 62px" #dropListContainer cdkDropListGroup>
+    <div class="Imgcontainer"  cdkDropList [cdkDropListData]="i" *ngFor="let item of items; let i = index">
+       <img draggable="true" cdkDrag [cdkDragData]="i" (cdkDragEntered)="dragEntered($event)" (cdkDragMoved)="dragMoved($event)" (cdkDragDropped)="dragDropped($event)"
+        [src]="item.url" id="image" />
       <div class="buttonContainer d-flex">
         <div class="btnEdit" (click)="handleClick(i)">
           <i class="far fa-edit"></i>
-          <input class="hidden" type="file" id="upload-file" accept=".jpg, .jpeg, .png" name="upload-file" />
+          <input class="hidden" type="file" id="upload-file" ngf-max-width="500" ngf-max-height="500" ngf-max-size="2MB" accept=".jpg, .jpeg, .png" name="upload-file" />
         </div>
         <div class="btnRemove" (click)="onDelete(i)"><i class="fas fa-times-circle"></i></div>
       </div>
-      <img draggable="true" [src]="file.url" id="image" />
     </div>
   </div>
 </div>
