@@ -11,9 +11,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { ImageDragDirective } from './image-drag.directive';
 import { FormComponent } from './form/form.component';
+import { TableComponent } from './table/table.component';
 
 @NgModule({
-  declarations: [AppComponent, ControlMessagesComponent, ImageUploadComponent, ImageDragDirective, FormComponent],
+  declarations: [AppComponent, ControlMessagesComponent, ImageUploadComponent, ImageDragDirective, FormComponent, TableComponent],
   imports: [BrowserModule, ReactiveFormsModule ,AppRoutingModule, RouterModule, NgbModule, FormsModule, DragDropModule],
   providers: [],
   bootstrap: [AppComponent],

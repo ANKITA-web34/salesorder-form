@@ -1,3 +1,4 @@
+<a [routerLink]="['/']">Home</a>&nbsp;
 <div class="container py-3" >
     <div class="dragContainer" (click)="onDragContainerClick()" appImageDrag [callOnChange]="false" (files)="filesDropped($event)">
       <span style="font-size: 25px">Drop your image here</span><br>
@@ -18,4 +19,3 @@
   </div>
 </div>
 
-<a [routerLink]="['/']">Home</a>
