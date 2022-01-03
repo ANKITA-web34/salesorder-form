@@ -1,0 +1,10 @@
+table {
+    width: 100%;
+}
+
+.status {
+    padding: 8px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px #a39b9b;
+    color: #fff;
+}
