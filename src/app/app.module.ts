@@ -21,10 +21,15 @@ import {MatRadioModule} from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import {AssortmentOrderComponent } from './assortment-order/assortment-order.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatChipsModule} from '@angular/material/chips';
+
 @NgModule({
-  declarations: [AppComponent, ControlMessagesComponent, ImageUploadComponent, ImageDragDirective, FormComponent, TableComponent],
+  declarations: [AppComponent, ControlMessagesComponent, ImageUploadComponent, ImageDragDirective, FormComponent, TableComponent, AssortmentOrderComponent],
   imports: [BrowserModule,BrowserAnimationsModule, ReactiveFormsModule ,AppRoutingModule, RouterModule, 
-  NgbModule, FormsModule, DragDropModule,MatTableModule,MatSortModule, MatPaginatorModule, MatFormFieldModule,MatMenuModule, MatRadioModule,MatSelectModule,MatInputModule,MatButtonModule],
+  NgbModule, FormsModule, DragDropModule,MatTableModule,MatSortModule, MatPaginatorModule, MatFormFieldModule,
+  MatMenuModule, MatRadioModule,MatSelectModule,MatInputModule,MatButtonModule, MatSlideToggleModule, MatChipsModule],
   providers: [],
   bootstrap: [AppComponent],
 })

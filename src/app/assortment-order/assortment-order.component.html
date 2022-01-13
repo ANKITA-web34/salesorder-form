@@ -1,0 +1,87 @@
+<div class="container border mt-5 p-3">
+  <form class="example-form" [formGroup]="assortmentOrderForm">
+    <div class="row">
+      <div class="col">
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Product Category<span>*</span></mat-label>
+          <mat-select formControlName="category" (selectionChange)="onproductCategoryChange()">
+            <mat-option *ngFor="let item of productCategory" [value]="item">
+              {{ item.categoryName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Product Id<span>*</span></mat-label>
+          <mat-select formControlName="product">
+            <mat-option *ngFor="let item of filterProductList" [value]="item">
+              {{ item.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col"><mat-slide-toggle formControlName="toggleButton" (click)="matSlideToggle()">Slide me!</mat-slide-toggle></div>
+      <div class="col mb-2">
+        <mat-chip-list class="example-chip">
+          <mat-chip class="example-box"> 108 </mat-chip>
+        </mat-chip-list>
+      </div>
+    </div>
+    <!--For Manualy Add Bale Qnt-->
+    <ng-container
+      *ngIf="!assortmentOrderForm.get('toggleButton').value"
+      [style.visibility]="assortmentOrderForm.get('toggleButton').value ? 'visible' : 'hidden'"
+    >
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Bale Quntity<span>*</span></mat-label>
+            <input type="number" formControlName="baleQnt" matInput placeholder="Ex. 1" (change)="onBalQntInput()"/>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Remarks<span>*</span></mat-label>
+            <textarea matInput placeholder="Ex. It makes me feel..."></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </ng-container>
+    <!--Dynamically Created Input-->
+    <div
+      *ngIf="assortmentOrderForm.get('toggleButton').value"
+      [style.visibility]="assortmentOrderForm.get('toggleButton').value ? 'visible' : 'hidden'"
+      class="row d-flex align-items-center"
+    >
+      <div formArrayName="productDesignArray" class="col d-flex align-items-center" *ngFor="let item of newArrayControls; let i = index">
+        <div [formGroupName]="i" class="mr-3">
+          <mat-form-field>
+            <input type="number" matInput formControlName="input" placeholder="{{ item.controls['chip'].value }}" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col col-lg-12"><button class="btn btn-success" (click)="checkCalc()">Bale Count✅</button></div>
+    </div>
+
+    <!--Card-->
+    <div class="card" style="width: 10rem" *ngIf="assortmentOrderForm.get('card').value"
+     [style.visibility]="assortmentOrderForm.get('card').value ? 'visible' : 'hidden'">
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <a class="card-link" [style.cursor]="'pointer'" (click)="edit()"><i class="far fa-edit"></i></a>
+          </div>
+          <div class="col">
+            <a class="card-link ml-5" [style.color]="'red'" [style.cursor]="'pointer'" (click)="remove()"><i class="fas fa-trash"></i></a>
+          </div>
+        </div>
+        <h3 class="card-title text-bold" id="text" style="margin: 1rem">Bale Qnt:{{ number }}</h3>
+      </div>
+    </div>
+  </form>
+</div>

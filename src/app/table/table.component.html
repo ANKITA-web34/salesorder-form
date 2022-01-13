@@ -1,7 +1,6 @@
-<a [routerLink]="['/']">Home</a>
  <div class="container">  
   <div class="d-flex justify-content-end">
-    <button class="btn btn-primary iconColor mr-3" (click)="filterByStatus($event)"> Filter </button> <!--(click)="getFilterObject($event, $event)"-->
+    <button class="btn btn-primary iconColor mr-3" (click)="filterByStatus($event)"> Filter </button>
     <button class="" mat-flat-button color="warn">Reset</button>
   </div>  
   <div class="col filterOptions  mt-2" *ngIf="isDivVisible"><hr>
@@ -23,10 +22,10 @@
  <div class="col filterOptions  mt-2" *ngIf="isDivVisible"><hr>
     <h3>Filter By Order Status</h3>
     <mat-radio-group aria-label="Select an option" [style.visibility]="isDivVisible ? 'visible' : 'hidden'">
-      <mat-radio-button class="pr-2" value="6" (click)="filterByStatus($event)">Pending</mat-radio-button>
-      <mat-radio-button class="pr-2" value="7" >Delivered</mat-radio-button>
-      <mat-radio-button class="pr-2" value="8" >Cancel</mat-radio-button>
-      <mat-radio-button class="pr-2" value="9" (click)="filterByStatus($event)">Approved</mat-radio-button>
+      <mat-radio-button class="pr-2" value="6" (click)="filterByDate('pending')">Pending</mat-radio-button>
+      <mat-radio-button class="pr-2" value="7" (click)="filterByDate('delivered')">Delivered</mat-radio-button>
+      <mat-radio-button class="pr-2" value="8" (click)="filterByDate('cancel')">Cancel</mat-radio-button>
+      <mat-radio-button class="pr-2" value="9" (click)="filterByDate('approved')">Approved</mat-radio-button>
     </mat-radio-group>
   </div> 
 
@@ -58,7 +57,7 @@
     <!-- Order Date Column -->
  <ng-container matColumnDef="orderDate">
       <th mat-header-cell mat-sort-header *matHeaderCellDef>Order Date</th>
-      <td mat-cell *matCellDef="let element">{{ element.orderDate }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.orderDate | date }}</td>
     </ng-container>
 
     <!-- Status Column -->
@@ -72,10 +71,7 @@
         </span>       
       </td>
     </ng-container>
-    <!-- *ngIf="element.status==='approved'" style="background-color: blue; color: #fff;"
-      [style.color]="element.status=='approved' ? 'blue' : null && element.status=='cancel' ? 'red' : null"
-    ng-style="element.status==='approved'" style="background-color:blue; color: #fff;"    -->
-
+   
     <!-- Number Column -->
  <ng-container matColumnDef="Mobile">
       <th mat-header-cell *matHeaderCellDef>Number</th>
