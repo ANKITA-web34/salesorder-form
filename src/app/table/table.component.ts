@@ -5,18 +5,18 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { ngxCsv } from 'ngx-csv/ngx-csv';
-import * as moment from 'moment';
+import { fileURLToPath } from 'url';
+// import * as moment from 'moment';
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],
 })
+
 export class TableComponent implements AfterViewInit {
-  displayedColumns: string[] = ['orderId', 'partyName', 'orderDate', 'status', 'Mobile', 'station'];
+  displayedColumns: string[] = ['orderId', 'orderDate', 'partyName', 'station', 'Mobile', 'status', 'action'];
   dataSource: any = new MatTableDataSource(ELEMENT_DATA); 
-  // dataSourceFiltered: any = new MatTableDataSource(ELEMENT_DATA);
-  // dataSource = new MatTableDataSource();
   isOnIndex: boolean = false;
   isDivVisible: boolean = false;
   clikOnCustom: boolean = false;
@@ -50,8 +50,30 @@ export class TableComponent implements AfterViewInit {
 
   filterData(event: any) {this.dataSource.filter = event.target.value; } //Filter by search bar
 
-  filterByStatus(event: any) {
+  filter() {
+    this.isDivVisible = !this.isDivVisible;
     this.clikOnCustom = false;
+  }
+
+  filterByStatus(filterRequest:any) {
+    if(filterRequest === 'pending') {
+      console.log('status: panding')
+      this.dataSource.filter = filterRequest;
+    }
+    if(filterRequest === 'delivered') {
+      console.log('status: delivered')
+      this.dataSource.filter = filterRequest;
+    }
+
+    if(filterRequest === 'cancel') {
+      console.log('status: cancel');
+      this.dataSource.filter = filterRequest;
+    }
+
+    if(filterRequest === 'approved') {
+      console.log('status: approved');
+      this.dataSource.filter = filterRequest;
+    }
   }
 
   clickMe() {
@@ -71,7 +93,7 @@ export class TableComponent implements AfterViewInit {
   filterByDate(filterRequest: any) {
     this.clikOnCustom = false;
 
-    if (filterRequest === 'today' && filterRequest === 'approved' ) {
+    if (filterRequest === 'today') {
       let tableData = [];
       let todayDate: Date = new Date();
       console.log(todayDate);
@@ -103,20 +125,19 @@ export class TableComponent implements AfterViewInit {
       this.dataSource = tableData;
     }
 
-    if(filterRequest === 'lastMonth') {
+    if(filterRequest === 'lastMonth' ) {
       let tableData = [];
       this.requestDate = new Date();    
       let previousMonth = new Date(this.requestDate);
       previousMonth.setMonth(this.requestDate.getMonth() - 1);
       let firstDay = new Date(previousMonth.getFullYear(), previousMonth.getMonth(), 1);
       let lastDay = new Date(previousMonth.getFullYear(), previousMonth.getMonth() + 1, 0);
-      console.log(firstDay, lastDay); 
       ELEMENT_DATA.forEach((day)=> {
         if(day.orderDate >= firstDay && day.orderDate <= lastDay) {
-          tableData.push(day)
+          tableData.push(day);
         }
       })    
-      this.dataSource = tableData;
+      this.dataSource = tableData;      
     }
 
     if (filterRequest === 'thisMonth') {
@@ -134,9 +155,8 @@ export class TableComponent implements AfterViewInit {
 
     if (filterRequest === 'custom') {
       this.clikOnCustom = !this.clikOnCustom;
-      console.log('custom');
-      
     }
+
   }
 
   Dowanload() {
@@ -164,6 +184,7 @@ export interface PeriodicElement {
   status: string;
   station: string;
   Mobile: number;
+  action: any;
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
@@ -174,6 +195,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'pending',
     station: 'pali Rajasthan',
     Mobile: 1274151,
+    action: '',
   },
   {
     orderId: 2,
@@ -182,6 +204,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'approved',
     station: 'jaipur, Rajasthan',
     Mobile: 124151,
+    action: '',
   },
   {
     orderId: 3,
@@ -190,6 +213,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'delivered',
     station: 'Ajmer, Rajasthan',
     Mobile: 1246151,
+    action: '',
   },
   {
     orderId: 4,
@@ -198,6 +222,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'delivered',
     station: 'Gurugram, Dehli',
     Mobile: 124151,
+    action: ''
   },
   {
     orderId: 5,
@@ -206,6 +231,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'pending',
     station: 'Mumbai, Maharastra',
     Mobile: 124151,
+    action: ''
   },
   {
     orderId: 6,
@@ -214,6 +240,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'approved',
     station: 'karnal, Hariyana',
     Mobile: 124151,
+    action: ''
   },
   {
     orderId: 7,
@@ -222,6 +249,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'approved',
     station: 'Noida, Delhi',
     Mobile: 199151,
+    action: ''
   },
   {
     orderId: 8,
@@ -230,6 +258,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'canceled',
     station: 'Jodhpur, Rajasthan',
     Mobile: 134151,
+    action: ''
   },
   {
     orderId: 9,
@@ -238,6 +267,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'pending',
     station: 'Chandigadth, Punjab',
     Mobile: 124151,
+    action: ''
   },
   {
     orderId: 10,
@@ -246,6 +276,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'canceled',
     station: 'Amratsar, Punjab',
     Mobile: 1241851,
+    action: ''
   },
   {
     orderId: 11,
@@ -254,7 +285,8 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'approved',
     station: 'city/state',
     Mobile: 94135331,
-  },
+    action: ''
+  },  
   {
     orderId: 12,
     partyName: 'partyName12',
@@ -262,6 +294,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'canceled',
     station: 'Ahamdabad, Gujrat',
     Mobile: 104151,
+    action: '',
   },
   {
     orderId: 13,
@@ -270,6 +303,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'canceled',
     station: 'Gandhinager, Gujrat',
     Mobile: 124151,
+    action: ''
   },
   {
     orderId: 14,
@@ -278,6 +312,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'canceled',
     station: 'city/state',
     Mobile: 735737456,
+    action: ''
   },
   {
     orderId: 15,
@@ -286,6 +321,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'canceled',
     station: 'Kota, Rajasthan',
     Mobile: 124151,
+    action: ''
   },
   {
     orderId: 16,
@@ -294,6 +330,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'pending',
     station: 'city/state',
     Mobile: 8895362,
+    action: ''
   },
   {
     orderId: 17,
@@ -302,6 +339,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'canceled',
     station: 'city/state',
     Mobile: 99732,
+    action: ''
   },
   {
     orderId: 18,
@@ -310,6 +348,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'canceled',
     station: 'city/state',
     Mobile: 124151,
+    action: ''
   },
   {
     orderId: 19,
@@ -318,6 +357,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'approved',
     station: 'city/state',
     Mobile: 124151,
+    action: ''
   },
   {
     orderId: 20,
@@ -326,5 +366,6 @@ const ELEMENT_DATA: PeriodicElement[] = [
     status: 'pending',
     station: 'city/state',
     Mobile: 124151,
+    action: ''
   },
 ];

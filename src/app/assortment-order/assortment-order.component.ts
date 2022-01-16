@@ -64,7 +64,6 @@ export class AssortmentOrderComponent implements OnInit {
     this.arrayValue = this.assortmentOrderForm.get('productDesignArray') as FormArray;
 
     for (let i = this.arrayValue.controls.length; i >= 0; i--) {
-      console.log(i);
       this.arrayValue.removeAt(i);
     }
 
@@ -91,7 +90,7 @@ export class AssortmentOrderComponent implements OnInit {
     let calc = qty % baleQuntPer;
     if (calc == 0) {
       alert('Bale Added');
-      this.number += 1;
+      // this.number++
     } else {
       alert('not match with bale quantity.');
     }
@@ -107,8 +106,10 @@ export class AssortmentOrderComponent implements OnInit {
     });
 
     let roundValue = Math.round(count / baleQuntPer);
-    this.number = roundValue;
-
+    if(roundValue == 2) {
+      this.number = roundValue
+    }    
+    console.log(roundValue)
     this.calculate();
     this.assortmentOrderForm.get('card').setValue(true);
     this.assortmentOrderForm.get('toggleButton').setValue(false);

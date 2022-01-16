@@ -1,3 +1,4 @@
+import { MapComponent } from './map/map.component';
 import { AssortmentOrderComponent } from './assortment-order/assortment-order.component';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { FormComponent } from './form/form.component';
@@ -10,7 +11,8 @@ const routes: Routes = [
   {path: "", component: FormComponent},
   {path: "catlog", component: ImageUploadComponent},
   {path: "table", component: TableComponent},
-  {path: "assortment", component: AssortmentOrderComponent}
+  {path: "assortment", component: AssortmentOrderComponent},
+  {path: 'map', component: MapComponent}
 ];
 
 @NgModule({
