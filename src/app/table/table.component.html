@@ -1,33 +1,35 @@
 <div class="container">
   <div class="d-flex justify-content-end">
     <button class="btn btn-primary iconColor mr-3" (click)="filter()">Filter</button>
-    <button class="" mat-flat-button color="warn">Reset</button>
+    <!-- <button mat-flat-button color="warn">Reset</button> -->
   </div>
+  <form [formGroup]="customForm">
   <div class="col filterOptions mt-2" *ngIf="isDivVisible">
     <hr />
     <mat-radio-group aria-label="Select an option" [style.visibility]="isDivVisible ? 'visible' : 'hidden'">
       <mat-radio-button class="pr-2" value="1" (click)="filterByDate('today')">Today</mat-radio-button>
       <mat-radio-button class="pr-2" value="2" (click)="filterByDate('yesterday')">Yesterday</mat-radio-button>
       <mat-radio-button class="pr-2" value="3" (click)="filterByDate('thisMonth')">This Month</mat-radio-button>
-      <mat-radio-button class="pr-2" value="4" (click)="filterByDate('lastMonth')">Last Month</mat-radio-button>
+       <mat-radio-button class="pr-2" value="4" (click)="filterByDate('lastMonth')">Last Month</mat-radio-button>  <!--*ngIf="clikOnCustom" [style.visibility]="clikOnCustom ? 'visible' : 'hidden'"-->
       <mat-radio-button class="pr-2" value="5" (click)="filterByDate('custom')">Custom</mat-radio-button>
     </mat-radio-group>
-    <button class="btn btn-sm btn-success" (click)="clickMe()">click</button>
-    <form [formGroup]="customForm" *ngIf="clikOnCustom">
-      <div [style.visibility]="clikOnCustom ? 'visible' : 'hidden'">
-        <input type="date" class="form-control" formControlName="formDate" placeholder="From " />
-        <input type="Date" class="form-control" formControlName="toDate" placeholder="To" />
+    <button class="btn btn-sm btn-success" (click)="clickMe()">click</button>    
+      <div class="d-flex">
+        <input type="date" class="form-control" formControlName="formDate" 
+        [style.visibility]="customForm.get('formDate').value ? 'visible' : 'hidden'" placeholder="From " />
+        <input type="Date" class="form-control" formControlName="toDate" 
+        [style.visibility]="customForm.get('toDate').value ? 'visible' : 'hidden'" placeholder="To" />
       </div>
-    </form>
-  </div>
-  <div class="col filterOptions mt-2" *ngIf="isDivVisible">
+    </div>
+  </form>
+  <div class="col filterOptions" *ngIf="isDivVisible">
     <hr />
     <h3>Filter By Order Status</h3>
     <mat-radio-group aria-label="Select an option" [style.visibility]="isDivVisible ? 'visible' : 'hidden'">
       <mat-radio-button class="pr-2" value="6" (click)="filterByStatus('pending')"> Pending </mat-radio-button>
       <mat-radio-button class="pr-2" value="7" (click)="filterByStatus('delivered')">Delivered</mat-radio-button>
       <mat-radio-button class="pr-2" value="8" (click)="filterByStatus('cancel')">Cancel</mat-radio-button>
-      <mat-radio-button class="pr-2" value="9" (click)="filterByDate('approved')">Approved</mat-radio-button>
+      <mat-radio-button class="pr-2" value="9" (click)="filterByStatus('approved')">Approved</mat-radio-button>
     </mat-radio-group>
   </div>
 
@@ -44,8 +46,8 @@
 
   <button class="btn btn-info mb-2" (click)="Dowanload()">Excel</button>
   
-  <div class="mat-elevation-z8 container">
-    <table mat-table matSort [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
+  <div class="container">
+    <table mat-table [@.disabled]="true" matSort [dataSource]="dataSource" (matSortChange)="announceSortChange($event)" class="mat-elevation-z8">
       <!--Order Column -->
       <ng-container matColumnDef="orderId">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Order Id</th>
@@ -70,14 +72,8 @@
           <span
             class="status"
             [style.background-color]="
-              element.status == 'approved'
-                ? '#3588e1'
-                : 'green' && element.status == 'canceled'
-                ? 'red'
-                : 'green' && element.status == 'pending'
-                ? 'gray'
-                : 'green'
-            "
+              element.status == 'approved' ? '#3588e1' : '#3eb93e' && element.status == 'canceled' ? '#e95151e6' : '#3eb93e' && 
+              element.status == 'pending' ? '#808080b8': '#3eb93e'"
           >
             {{ element.status }}
           </span>
@@ -110,8 +106,6 @@
     <!--Pgaes-->
     <div class="d-flex justify-content-center">
       <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
-    </div>
-
-   
+    </div>   
   </div>
 </div>

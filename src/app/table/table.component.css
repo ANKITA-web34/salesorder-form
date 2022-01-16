@@ -3,8 +3,19 @@ table {
 }
 
 .status {
-    padding: 8px;
+    padding: 6px;
     border-radius: 10px;
-    box-shadow: 3px 3px 10px #a39b9b;
+    background-color: transparent;
     color: #fff;
+    font-size: 12px;
+    /* box-shadow: 0 6px 6px rgba(0, 0, 0, 0.6); */
+}
+
+.mat-row:nth-child(even){ background-color: #fff; }
+        
+.mat-row:nth-child(odd){ background-color: #f5f5f5; }
+
+::ng-deep .mat-sort-header-arrow {
+    transform: none !important;
+    opacity: 1 !important;
 }
