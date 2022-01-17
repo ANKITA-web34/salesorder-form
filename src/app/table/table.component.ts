@@ -1,10 +1,14 @@
+import { element } from 'protractor';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AfterViewInit, Component, ViewChild, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, Inject, Injectable } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { ngxCsv } from 'ngx-csv/ngx-csv';
+import { MatDialog} from '@angular/material/dialog';
+import { PopUp } from './popUp/popUp.component';
+import * as XLSX from 'xlsx';
 // import * as moment from 'moment';
 
 @Component({
@@ -15,17 +19,16 @@ import { ngxCsv } from 'ngx-csv/ngx-csv';
 export class TableComponent implements AfterViewInit {
   displayedColumns: string[] = ['orderId', 'orderDate', 'partyName', 'station', 'Mobile', 'status', 'action'];
   dataSource: any = new MatTableDataSource(ELEMENT_DATA);
-  isOnIndex: boolean = false;
   isDivVisible: boolean = false;
   clikOnCustom: boolean = false;
-  generalValue: any;
   requestDate: any;
-  requestStatus: any;
-  filterSelectObj: any = []
-
+  tableData = [];
+  selectedOption:any;
+  selectedStatusOption:any;
+  fileName = "Excel.xlsx"
   customForm = new FormGroup({
-    formDate: new FormControl(false),
-    toDate: new FormControl(false),
+    formDate: new FormControl(),
+    toDate: new FormControl(),
     apply: new FormControl({ value: false }),
   });
 
@@ -38,7 +41,7 @@ export class TableComponent implements AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  constructor(private _liveAnnouncer: LiveAnnouncer) {}
+  constructor(private _liveAnnouncer: LiveAnnouncer, public dialog: MatDialog) {}
 
   announceSortChange(sortState: Sort) {
     console.log(sortState);
@@ -49,7 +52,7 @@ export class TableComponent implements AfterViewInit {
     }
   }
 
-  filterData(event: any) { this.dataSource.filter = event.target.value; } //Filter by search bar
+  search(event: any) { this.dataSource.filter = event.target.value; } //Filter by search bar
 
   filter() {
     this.isDivVisible = !this.isDivVisible;
@@ -57,110 +60,150 @@ export class TableComponent implements AfterViewInit {
   }
 
   filterByStatus(filterRequest: any) {
+    this.tableData = [];
     if (filterRequest === 'pending') {
-      this.dataSource.filter = filterRequest;
+      console.log(filterRequest);
+      this.selectedStatusOption = filterRequest;
+      console.log(this.selectedStatusOption);
+      // this.dataSource.filter = filterRequest;
     }
 
-    if (filterRequest === 'delivered') {
-      console.log('status: delivered');
-      this.dataSource.filter = filterRequest;
+    else if (filterRequest === 'delivered') {
+      console.log(filterRequest);
+      this.selectedStatusOption = filterRequest;
+      console.log(this.selectedStatusOption);
+      // this.dataSource.filter = filterRequest;
     }
     
-    if (filterRequest === 'cancel') {
-      console.log('status: cancel');
-      this.dataSource.filter = filterRequest;
+    else if (filterRequest === 'cancel') {
+      console.log(filterRequest);
+      this.selectedStatusOption = filterRequest;
+      console.log(this.selectedStatusOption);
+      // this.dataSource.filter = filterRequest;
     }
 
-    if (filterRequest === 'approved') {
-      console.log('status: approved');
-      this.dataSource.filter = filterRequest;
+    else if (filterRequest === 'approved') {
+      console.log(filterRequest);
+      this.selectedStatusOption = filterRequest;
+      console.log(this.selectedStatusOption);
+      // this.dataSource.filter = filterRequest;
     }
   }
 
-  tableData = [];
-
-  clickMe() {
-    this.dataSource = this.tableData;    
-  }
-
-  filterByDate(filterRequest: any) {
-    this.clikOnCustom = false;
-
-    if (filterRequest === 'today') {
+  apply() {    
+    console.log(this.selectedOption);
+    console.log(this.selectedStatusOption);
+    if(this.selectedOption === 'lastMonth') {
+      this.tableData = [];
+      this.requestDate = new Date();
+      let previousMonth = new Date(this.requestDate);
+      previousMonth.setMonth(this.requestDate.getMonth()- 1);
+      let firstDay = new Date(previousMonth.getFullYear(), previousMonth.getMonth(), 1);
+      let lastDay = new Date(previousMonth.getFullYear(), previousMonth.getMonth() + 1, 0);
+      ELEMENT_DATA.forEach((day)=> {
+        if(day.orderDate >= firstDay && day.orderDate <= lastDay && day.status == this.selectedStatusOption) {
+          this.tableData.push(day);
+        }
+      })
+    }
+    else if(this.selectedOption === 'thisMonth') {
+       this.tableData = [];
+      let date = new Date();
+      let firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+      ELEMENT_DATA.forEach((item) => {
+        if (item.orderDate >= firstDay && item.orderDate <= lastDay && item.status == this.selectedStatusOption) {
+          this.tableData.push(item);
+        };
+      });
+    }
+    else if(this.selectedOption === 'today') {
       this.tableData = [];
       let todayDate: Date = new Date();
-      console.log(todayDate);
       todayDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate());
-      console.log(todayDate);
       ELEMENT_DATA.forEach((day) => {
-        console.log(day.orderDate, todayDate);
-        if (day.orderDate >= todayDate && day.orderDate <= todayDate) {
+        if (day.orderDate >= todayDate && day.orderDate <= todayDate && day.status == this.selectedStatusOption) {
           this.tableData.push(day);
         }
       });
     }
-
-    if (filterRequest === 'yesterday') {
-      console.log('yesterday');
-      let tableData = [];
+    else if(this.selectedOption === 'yesterday') {
+      this.tableData = [];
       let today = new Date();
       let yesterday = new Date(today);
       yesterday.setDate(yesterday.getDate() - 1);
       yesterday = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate());
       console.log(today, yesterday);
       ELEMENT_DATA.forEach((day) => {
-        console.log(day.orderDate, yesterday, day.orderDate >= yesterday && day.orderDate <= yesterday);
-        if (day.orderDate >= yesterday && day.orderDate <= yesterday) {
-          tableData.push(day);
-        }
-      });
-    }
-
-    if (filterRequest === 'lastMonth') {
-      this.tableData = [];
-      this.requestDate = new Date();
-      let previousMonth = new Date(this.requestDate);
-      previousMonth.setMonth(this.requestDate.getMonth() - 1);
-      let firstDay = new Date(previousMonth.getFullYear(), previousMonth.getMonth(), 1);
-      let lastDay = new Date(previousMonth.getFullYear(), previousMonth.getMonth() + 1, 0);
-      ELEMENT_DATA.forEach((day) => {
-        if (day.orderDate >= firstDay && day.orderDate <= lastDay) {
+        if (day.orderDate <= yesterday && day.orderDate >= yesterday && day.status == this.selectedStatusOption) {
           this.tableData.push(day);
         }
       });
     }
-
-    if (filterRequest === 'thisMonth') {
+    else if(this.selectedOption === 'custom') {
       this.tableData = [];
-      let date = new Date();
-      let firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-      let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-      ELEMENT_DATA.forEach((item) => {
-        if (item.orderDate >= firstDay && item.orderDate <= lastDay) {
-          this.tableData.push(item);
+      let var1: Date = this.customForm.get('formDate').value;
+      console.log(var1);
+      var1 = new Date(var1);
+      let var2: Date = this.customForm.get('toDate').value;
+      console.log(var2);
+      var2 = new Date(var2);
+      ELEMENT_DATA.forEach((day) => {
+        if (day.orderDate >= var1 && day.orderDate <= var2 && day.status == this.selectedStatusOption) {
+          this.tableData.push(day);
         }
       });
     }
+    //Filter the dataSource!
+    this.dataSource = this.tableData;  
+  }
 
-    if (filterRequest === 'custom') {
-      const value = this.customForm.get('formDate').value &&  this.customForm.get('toDate').value;
-      this.customForm.get('formDate').setValue(!value);
-      this.customForm.get('toDate').setValue(!value);
+  filterByDate(filterRequest: any) {
 
-      // this.tableData = [];
-      // let var1: Date = this.customForm.get('formDate').value;
-      // var1 = new Date(var1);
-      // let var2: Date = this.customForm.get('toDate').value;
-      // var2 = new Date(var2);
-      // ELEMENT_DATA.forEach((day) => {
-      //   if (day.orderDate >= var1 && day.orderDate <= var2) {
-      //     this.tableData.push(day);
-      //   }
-      // });
+    if (filterRequest === 'today') {
+      console.log(filterRequest);
+      this.selectedOption = filterRequest;
+      console.log(this.selectedOption);
+    }
+
+    else if (filterRequest === 'yesterday') {
+      console.log(filterRequest);
+      this.selectedOption = filterRequest;
+      console.log(this.selectedOption);
+    }
+
+    else if (filterRequest === 'lastMonth') {
+      console.log(filterRequest);
+      this.selectedOption = filterRequest
+      console.log(this.selectedOption);
+    }
+
+    else if (filterRequest === 'thisMonth') {
+      console.log(filterRequest);
+      this.selectedOption = filterRequest
+      console.log(this.selectedOption);
+    }
+
+    else if (filterRequest === 'custom') {
+      console.log(filterRequest);
+      this.selectedOption = filterRequest
+      console.log(this.selectedOption);
+      this.clikOnCustom = !this.clikOnCustom;
     }
   }
 
-  Dowanload() {
+
+  reset() {
+    console.log("reset", this.dataSource)
+    this.tableData = []
+    console.log(this.tableData)
+    ELEMENT_DATA.forEach((getData)=> {
+      this.tableData.push(getData);
+    })
+    this.dataSource = this.tableData;
+  }
+
+  Csv() {
     let options = {
       fieldSeparator: ',',
       quoteStrings: '"',
@@ -175,6 +218,25 @@ export class TableComponent implements AfterViewInit {
 
     new ngxCsv(this.dataSource.filteredData, 'MatTable', options);
     console.log(this.dataSource.filteredData);
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(PopUp);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  Excel() {
+    let element = document.getElementById('mat-table');
+    console.log(element);
+    const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+    
+    const workbook:XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook,worksheet, 'Sheet1');
+
+    XLSX.writeFile(workbook, this.fileName);
   }
 }
 
@@ -336,7 +398,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   {
     orderId: 17,
     partyName: 'partyName17',
-    orderDate: new Date(2021, 11, 21), //formatDate(new Date(), '21/11/2021', 'en-GB'),
+    orderDate: new Date(2022, 0, 16), //formatDate(new Date(), '21/11/2021', 'en-GB'),
     status: 'canceled',
     station: 'city/state',
     Mobile: 99732,
@@ -345,7 +407,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   {
     orderId: 18,
     partyName: 'partyName18',
-    orderDate: new Date(2021, 10, 19), //formatDate(new Date(), '19/12/2021', 'en-GB'),
+    orderDate: new Date(2022, 0, 17), //formatDate(new Date(), '19/12/2021', 'en-GB'),
     status: 'canceled',
     station: 'city/state',
     Mobile: 124151,
@@ -370,3 +432,4 @@ const ELEMENT_DATA: PeriodicElement[] = [
     action: '',
   },
 ];
+

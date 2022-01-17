@@ -2,6 +2,10 @@ table {
     width: 100%;
 }
 
+/* .filterOptions {
+    margin-bottom: -25px;
+} */
+
 .status {
     padding: 6px;
     border-radius: 10px;

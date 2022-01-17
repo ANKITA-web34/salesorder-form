@@ -27,16 +27,19 @@ import { MatChipsModule} from '@angular/material/chips';
 import { MapComponent } from './map/map.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
+import { PopUp } from './table/popUp/popUp.component';
 // import { PdfViewerModule } from 'ng2-pdf-viewer';
 //'AIzaSyB65kN-PlYmAXBEEI2Vj-vgkN70iR9MwBI' API KEY
 
 @NgModule({
   declarations: [ AppComponent, ControlMessagesComponent, ImageUploadComponent, ImageDragDirective, FormComponent, TableComponent, 
-  AssortmentOrderComponent, MapComponent ],
+  AssortmentOrderComponent, MapComponent, PopUp ],
   imports: [ BrowserModule, BrowserAnimationsModule, ReactiveFormsModule , AppRoutingModule, RouterModule, 
   NgbModule, FormsModule, DragDropModule, MatTableModule, MatSortModule, MatPaginatorModule, MatFormFieldModule,
   MatMenuModule, MatRadioModule, MatSelectModule, MatInputModule, MatButtonModule, MatSlideToggleModule, MatChipsModule, GoogleMapsModule,
-  MatIconModule, ],
+  MatIconModule, MatDialogModule, MatCardModule],
   providers: [],
   bootstrap: [AppComponent],
 })

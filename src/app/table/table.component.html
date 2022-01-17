@@ -1,7 +1,7 @@
 <div class="container">
   <div class="d-flex justify-content-end">
     <button class="btn btn-primary iconColor mr-3" (click)="filter()">Filter</button>
-    <!-- <button mat-flat-button color="warn">Reset</button> -->
+    <button mat-flat-button color="warn" (click)="reset()">Reset</button>
   </div>
   <form [formGroup]="customForm">
   <div class="col filterOptions mt-2" *ngIf="isDivVisible">
@@ -10,44 +10,45 @@
       <mat-radio-button class="pr-2" value="1" (click)="filterByDate('today')">Today</mat-radio-button>
       <mat-radio-button class="pr-2" value="2" (click)="filterByDate('yesterday')">Yesterday</mat-radio-button>
       <mat-radio-button class="pr-2" value="3" (click)="filterByDate('thisMonth')">This Month</mat-radio-button>
-       <mat-radio-button class="pr-2" value="4" (click)="filterByDate('lastMonth')">Last Month</mat-radio-button>  <!--*ngIf="clikOnCustom" [style.visibility]="clikOnCustom ? 'visible' : 'hidden'"-->
-      <mat-radio-button class="pr-2" value="5" (click)="filterByDate('custom')">Custom</mat-radio-button>
+       <mat-radio-button class="pr-2" value="4" (click)="filterByDate('lastMonth')">Last Month</mat-radio-button> <!--*ngIf="clikOnCustom" [style.visibility]="clikOnCustom ? 'visible' : 'hidden'"-->
+      <mat-radio-button class="pr-2" value="5"  (click)="filterByDate('custom')">Custom</mat-radio-button>
     </mat-radio-group>
-    <button class="btn btn-sm btn-success" (click)="clickMe()">click</button>    
-      <div class="d-flex">
-        <input type="date" class="form-control" formControlName="formDate" 
-        [style.visibility]="customForm.get('formDate').value ? 'visible' : 'hidden'" placeholder="From " />
-        <input type="Date" class="form-control" formControlName="toDate" 
-        [style.visibility]="customForm.get('toDate').value ? 'visible' : 'hidden'" placeholder="To" />
+    <button class="btn btn-sm btn-info" (click)="apply()">Apply</button>    
+      <div class="d-flex mt-2 justify-content-between align-items-center" *ngIf="clikOnCustom" [style.visibility]="clikOnCustom ? 'visible' : 'hidden'">
+        <input type="date" class="form-control" formControlName="formDate" [style.backgroundColor]="'#f5f5f5'" placeholder="From " />
+        <input type="Date" class="form-control" formControlName="toDate" [style.backgroundColor]="'#f5f5f5'" placeholder="To" />
       </div>
     </div>
   </form>
-  <div class="col filterOptions" *ngIf="isDivVisible">
-    <hr />
+  <hr/>
+  <div class="col" *ngIf="isDivVisible">
     <h3>Filter By Order Status</h3>
     <mat-radio-group aria-label="Select an option" [style.visibility]="isDivVisible ? 'visible' : 'hidden'">
-      <mat-radio-button class="pr-2" value="6" (click)="filterByStatus('pending')"> Pending </mat-radio-button>
-      <mat-radio-button class="pr-2" value="7" (click)="filterByStatus('delivered')">Delivered</mat-radio-button>
-      <mat-radio-button class="pr-2" value="8" (click)="filterByStatus('cancel')">Cancel</mat-radio-button>
-      <mat-radio-button class="pr-2" value="9" (click)="filterByStatus('approved')">Approved</mat-radio-button>
+      <mat-radio-button class="pr-2" value="6" [checked]="true">All</mat-radio-button>
+      <mat-radio-button class="pr-2" value="7" (click)="filterByStatus('pending')"> Pending </mat-radio-button>
+      <mat-radio-button class="pr-2" value="8" (click)="filterByStatus('delivered')">Delivered</mat-radio-button>
+      <mat-radio-button class="pr-2" value="9" (click)="filterByStatus('cancel')">Cancel</mat-radio-button>
+      <mat-radio-button class="pr-2" value="10" (click)="filterByStatus('approved')">Approved</mat-radio-button>
     </mat-radio-group>
   </div>
 
   <ng-container>
     <div class="headerDiv d-flex justify-content-end mt-3">
       <div class="input-group mb-3 inputDiv" style="width: 20rem; user-select: auto">
-        <input type="text" class="form-control" placeholder="search" autocomplete="off" (keyup)="filterData($event)" />
+        <input type="text" class="form-control" placeholder="search" autocomplete="off" (keyup)="search($event)" />
         <div class="input-group-append">
           <span class="input-group-text" id="basic-addon2"><i class="fas fa-search"></i></span>
         </div>
       </div>
     </div>
   </ng-container>
-
-  <button class="btn btn-info mb-2" (click)="Dowanload()">Excel</button>
   
   <div class="container">
-    <table mat-table [@.disabled]="true" matSort [dataSource]="dataSource" (matSortChange)="announceSortChange($event)" class="mat-elevation-z8">
+    <div class="ml-3">
+     <button class="btn btn-info mb-2 mr-1" (click)="Csv()">Csv</button>
+      <button class="btn btn-info mb-2" (click)="Excel()">Excel</button> 
+    </div>
+    <table mat-table id="mat-table" [@.disabled]="true" matSort [dataSource]="dataSource" (matSortChange)="announceSortChange($event)" class="mat-elevation-z8">
       <!--Order Column -->
       <ng-container matColumnDef="orderId">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Order Id</th>
@@ -55,7 +56,7 @@
       </ng-container>
 
       <!-- Party Name Column -->
-      <ng-container matColumnDef="partyName">
+      <ng-container matColumnDef="partyName" colDef.editable=false>
         <th mat-header-cell mat-sort-header *matHeaderCellDef>Party Name</th>
         <td mat-cell *matCellDef="let element">{{ element.partyName }}</td>
       </ng-container>
@@ -95,8 +96,8 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef>Action</th>
         <td mat-cell *matCellDef="let element" [style.color]="'#3588e1'">
-          <i class="far fa-edit mr-3" [style.cursor]="'pointer'" (click)="editOption()"></i>
-          <i class="far fa-eye" [style.cursor]="'pointer'" (click)="viewOption()"></i>
+          <i class="far fa-edit mr-3" [style.cursor]="'pointer'" (click)="openDialog()"></i>
+          <i class="far fa-eye" [style.cursor]="'pointer'" (click)="closeMe()"></i>
         </td>
       </ng-container> 
 
@@ -105,7 +106,7 @@
     </table>
     <!--Pgaes-->
     <div class="d-flex justify-content-center">
-      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
+      <mat-paginator [pageSizeOptions]="[20, 10, 5]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
     </div>   
   </div>
 </div>

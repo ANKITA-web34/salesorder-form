@@ -29,6 +29,7 @@
     "ngx-csv": "^0.3.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
+    "xlsx": "^0.17.5",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
