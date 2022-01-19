@@ -43,11 +43,12 @@
     </div>
   </ng-container>
   
+  <div class="ml-3">
+   <button class="btn btn-info mb-2 mr-1" (click)="Csv()">Csv</button>
+    <button class="btn btn-info mb-2 mr-1" (click)="Excel()">Excel</button> 
+    <button class="btn btn-info mb-2"(click)="Pdf()">PDF</button> 
+  </div>
   <div class="container">
-    <div class="ml-3">
-     <button class="btn btn-info mb-2 mr-1" (click)="Csv()">Csv</button>
-      <button class="btn btn-info mb-2" (click)="Excel()">Excel</button> 
-    </div>
     <table mat-table id="mat-table" [@.disabled]="true" matSort [dataSource]="dataSource" (matSortChange)="announceSortChange($event)" class="mat-elevation-z8">
       <!--Order Column -->
       <ng-container matColumnDef="orderId">

@@ -30,7 +30,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { PopUp } from './table/popUp/popUp.component';
-// import { PdfViewerModule } from 'ng2-pdf-viewer';
 //'AIzaSyB65kN-PlYmAXBEEI2Vj-vgkN70iR9MwBI' API KEY
 
 @NgModule({
@@ -39,7 +38,7 @@ import { PopUp } from './table/popUp/popUp.component';
   imports: [ BrowserModule, BrowserAnimationsModule, ReactiveFormsModule , AppRoutingModule, RouterModule, 
   NgbModule, FormsModule, DragDropModule, MatTableModule, MatSortModule, MatPaginatorModule, MatFormFieldModule,
   MatMenuModule, MatRadioModule, MatSelectModule, MatInputModule, MatButtonModule, MatSlideToggleModule, MatChipsModule, GoogleMapsModule,
-  MatIconModule, MatDialogModule, MatCardModule],
+  MatIconModule, MatDialogModule, MatCardModule ],
   providers: [],
   bootstrap: [AppComponent],
 })

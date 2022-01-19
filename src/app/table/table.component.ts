@@ -1,6 +1,5 @@
-import { element } from 'protractor';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AfterViewInit, Component, ViewChild, Inject, Injectable } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, ElementRef } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -9,7 +8,9 @@ import { ngxCsv } from 'ngx-csv/ngx-csv';
 import { MatDialog} from '@angular/material/dialog';
 import { PopUp } from './popUp/popUp.component';
 import * as XLSX from 'xlsx';
-// import * as moment from 'moment';
+import * as jspdf from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
 
 @Component({
   selector: 'app-table',
@@ -34,11 +35,12 @@ export class TableComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('mat-table') el!:ElementRef;
 
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.dataSource.sort = this.sort;    
   }
 
   constructor(private _liveAnnouncer: LiveAnnouncer, public dialog: MatDialog) {}
@@ -192,7 +194,6 @@ export class TableComponent implements AfterViewInit {
     }
   }
 
-
   reset() {
     console.log("reset", this.dataSource)
     this.tableData = []
@@ -220,14 +221,6 @@ export class TableComponent implements AfterViewInit {
     console.log(this.dataSource.filteredData);
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(PopUp);
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-
   Excel() {
     let element = document.getElementById('mat-table');
     console.log(element);
@@ -238,6 +231,21 @@ export class TableComponent implements AfterViewInit {
 
     XLSX.writeFile(workbook, this.fileName);
   }
+
+  Pdf() {
+    const doc = new jspdf.jsPDF;
+    autoTable(doc, {html: '#mat-table'});
+    doc.save('Sales-order.pdf')
+  } 
+
+  openDialog() {
+    const dialogRef = this.dialog.open(PopUp);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
 }
 
 export interface PeriodicElement {
