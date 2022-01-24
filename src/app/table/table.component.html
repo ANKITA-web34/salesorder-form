@@ -1,8 +1,22 @@
+
 <div class="container">
   <div class="d-flex justify-content-end">
     <button class="btn btn-primary iconColor mr-3" (click)="filter()">Filter</button>
-    <button mat-flat-button color="warn" (click)="reset()">Reset</button>
-  </div>
+    <button mat-flat-button color="warn" (click)="reset()">Download</button>
+  </div> <!--(click)="reset()"-->
+    <div class="ml-3" *ngIf="Show" [style.visibility]="Show ? 'visible' : 'hidden'">
+      <h3 class="text-info mr-2"><span [style.color]="'red'">⚠</span> Select for delete records from downloaded document <span [style.color]="'red'">⚠</span></h3>
+      <div class="d-flex"><!--flex-column-->
+        <mat-checkbox class="mr-2" (click)="selectedBox('orderId')">Order Id </mat-checkbox>
+        <mat-checkbox class="mr-2" (click)="selectedBox('orderDate')">Order Date </mat-checkbox>
+        <mat-checkbox class="mr-2" (click)="selectedBox('partyName')">Party Name </mat-checkbox>
+        <mat-checkbox class="mr-2" (click)="selectedBox('station')">Station </mat-checkbox>
+        <mat-checkbox class="mr-2" (click)="selectedBox('status')">Status </mat-checkbox>
+        <mat-checkbox class="mr-2" (click)="selectedBox('Mobile')">Mobile no. </mat-checkbox>
+      </div> 
+      <button (click)="openCheckBox()" class="btn btn-success">Download Type</button>
+    </div>
+ 
   <form [formGroup]="customForm">
   <div class="col filterOptions mt-2" *ngIf="isDivVisible">
     <hr />
@@ -43,11 +57,6 @@
     </div>
   </ng-container>
   
-  <div class="ml-3">
-   <button class="btn btn-info mb-2 mr-1" (click)="Csv()">Csv</button>
-    <button class="btn btn-info mb-2 mr-1" (click)="Excel()">Excel</button> 
-    <button class="btn btn-info mb-2"(click)="Pdf()">PDF</button> 
-  </div>
   <div class="container">
     <table mat-table id="mat-table" [@.disabled]="true" matSort [dataSource]="dataSource" (matSortChange)="announceSortChange($event)" class="mat-elevation-z8">
       <!--Order Column -->
@@ -73,7 +82,7 @@
         <td mat-cell *matCellDef="let element">
           <span
             class="status"
-            [style.background-color]="
+            [style.color]="
               element.status == 'approved' ? '#3588e1' : '#3eb93e' && element.status == 'canceled' ? '#e95151e6' : '#3eb93e' && 
               element.status == 'pending' ? '#808080b8': '#3eb93e'"
           >
@@ -98,7 +107,7 @@
         <th mat-header-cell *matHeaderCellDef>Action</th>
         <td mat-cell *matCellDef="let element" [style.color]="'#3588e1'">
           <i class="far fa-edit mr-3" [style.cursor]="'pointer'" (click)="openDialog()"></i>
-          <i class="far fa-eye" [style.cursor]="'pointer'" (click)="closeMe()"></i>
+          <i class="far fa-eye" [style.cursor]="'pointer'"></i>
         </td>
       </ng-container> 
 

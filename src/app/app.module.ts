@@ -1,3 +1,4 @@
+import { TableDataService } from './table-data.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
@@ -30,16 +31,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { PopUp } from './table/popUp/popUp.component';
-//'AIzaSyB65kN-PlYmAXBEEI2Vj-vgkN70iR9MwBI' API KEY
+import { CheckBox } from './table/checkBox/checkBox.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
+//'AIzaSyB65kN-PlYmAXBEEI2Vj-vgkN70iR9MwBI' ----API KEY-----
 
 @NgModule({
   declarations: [ AppComponent, ControlMessagesComponent, ImageUploadComponent, ImageDragDirective, FormComponent, TableComponent, 
-  AssortmentOrderComponent, MapComponent, PopUp ],
+  AssortmentOrderComponent, MapComponent, PopUp, CheckBox ],
   imports: [ BrowserModule, BrowserAnimationsModule, ReactiveFormsModule , AppRoutingModule, RouterModule, 
   NgbModule, FormsModule, DragDropModule, MatTableModule, MatSortModule, MatPaginatorModule, MatFormFieldModule,
   MatMenuModule, MatRadioModule, MatSelectModule, MatInputModule, MatButtonModule, MatSlideToggleModule, MatChipsModule, GoogleMapsModule,
-  MatIconModule, MatDialogModule, MatCardModule ],
-  providers: [],
+  MatIconModule, MatDialogModule, MatCardModule, MatCheckboxModule],
+  providers: [TableDataService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

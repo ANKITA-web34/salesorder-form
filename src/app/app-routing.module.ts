@@ -8,11 +8,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { TableComponent } from './table/table.component';
 
 const routes: Routes = [
-  {path: "", component: FormComponent},
-  {path: "catlog", component: ImageUploadComponent},
-  {path: "table", component: TableComponent},
-  {path: "assortment", component: AssortmentOrderComponent},
-  {path: 'map', component: MapComponent}
+  { path: "", component: FormComponent },
+  { path: "catlog", component: ImageUploadComponent },
+  { path: "table", component: TableComponent },
+  { path: "assortment", component: AssortmentOrderComponent },
+  { path: 'map', component: MapComponent },
 ];
 
 @NgModule({
