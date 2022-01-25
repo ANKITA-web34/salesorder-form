@@ -12,6 +12,7 @@ import { ngxCsv } from 'ngx-csv/ngx-csv';
   templateUrl: './checkBox.component.html',
   styleUrls: ['./checkBox.component.css'],
 })
+
 export class CheckBox implements OnInit {
   table: ElementRef;
   fileName = "Excel.xlsx"
@@ -20,9 +21,7 @@ export class CheckBox implements OnInit {
   selectedOption: any;
   newData: any = [];
 
-  ngOnInit() {
-    this.dataSource = this._tableDataService.getData();
-  }
+  ngOnInit() { this.dataSource = this._tableDataService.getData() };
 
   constructor(private _tableDataService: TableDataService, public dialogRef: MatDialogRef<CheckBox>) {}
 
@@ -31,7 +30,6 @@ export class CheckBox implements OnInit {
     autoTable(doc, { html: '#mat-table' });
     doc.save('Sales-order.pdf');
   }
-
   
   Csv() {
     let options = {
@@ -65,24 +63,6 @@ export class CheckBox implements OnInit {
     console.log('close!');
     this.dialogRef.close();
   }
-
   
 }
 
-
-
-
-
-
-
-
-
-// AfterViewInit() {
-  //     let html = `
-  //     <table mat-table id="mat-table"  [dataSource]="dataSource" class="mat-elevation-z8">
-  //     <ng-container matColumnDef="${this.selectedOption}">
-  //         <th mat-header-cell *matHeaderCellDef mat-sort-header>${this.selectedOption}</th>
-  //         <td mat-cell *matCellDef="let element">{{ ${this.selectedData} }}</td>
-  //     </ng-container>
-  //     </table>`
-  // }
