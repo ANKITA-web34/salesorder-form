@@ -25,6 +25,7 @@ export class TableComponent implements AfterViewInit {
   selectedOption:any;
   Show = false;
   selectedStatusOption:any;
+  isPopup:boolean = false;
   
   customForm = new FormGroup({
     formDate: new FormControl(),
@@ -165,7 +166,13 @@ export class TableComponent implements AfterViewInit {
     }
   }
 
-  openDialog() { const dialogRef = this.dialog.open(PopUp) };
+  selectedObj:any;
+
+  // openDialog() { const dialogRef = this.dialog.open(PopUp) };
+  openPopUp(i) {
+    this.isPopup = true;
+    this.selectedObj = this.dataSource.filteredData[i];
+  }
 
   openCheckBox() {
     const dialogRef = this.dialog.open(CheckBox);

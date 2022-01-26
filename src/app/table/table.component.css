@@ -1,10 +1,12 @@
+body {
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+
 table {
     width: 100%;
 }
-
-/* .filterOptions {
-    margin-bottom: -25px;
-} */
 
 .status {
     padding: 6px;
@@ -22,4 +24,13 @@ table {
 ::ng-deep .mat-sort-header-arrow {
     transform: none !important;
     opacity: 1 !important;
+}
+
+.popup {
+    position: absolute;
+    background: #181a18cc;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 100%;
 }
