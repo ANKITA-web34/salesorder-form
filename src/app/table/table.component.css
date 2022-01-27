@@ -28,9 +28,8 @@ table {
 
 .popup {
     position: absolute;
-    background: #181a18cc;
+    background: #fafafa;
     top: 0;
     right: 0;
     left: 0;
-    height: 100%;
 }

@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { TableComponent } from './table/table.component';
+import { PopUp } from './table/popUp/popUp.component';
 
 const routes: Routes = [
   { path: "", component: FormComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: "table", component: TableComponent },
   { path: "assortment", component: AssortmentOrderComponent },
   { path: 'map', component: MapComponent },
+  { path : 'edit', component: PopUp}
 ];
 
 @NgModule({

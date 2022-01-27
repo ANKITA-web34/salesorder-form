@@ -1,9 +1,9 @@
-<div [formGroup]="newForm" class="popupForm"  *ngIf="isPopup" [style.visibility]="isPopup ? 'visible' : 'hidden'">
+<div [formGroup]="newForm" class="popupForm ">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Edit Table Data ✍</mat-card-title>
+      <mat-card-title class="text-info">Data ✍</mat-card-title>
     </mat-card-header>
-    <mat-card-content class="d-flex flex-column">
+    <mat-card-content class="d-flex flex-column text-warning">
       <mat-form-field>
         <input matInput formControlName="orderId" placeholder="Order Id" type="number" required />
       </mat-form-field>
@@ -21,7 +21,7 @@
       </mat-form-field>
     </mat-card-content>
     <div class="buttonGroup d-flex">
-      <div class="btn btn-info" (click)="save()">Save</div>
+      <!-- <div class="btn btn-info" (click)="save()">Save</div> -->
       <div class="btn btn-warning" (click)="cancel()">Cancel</div>
     </div>
   </mat-card>

@@ -5,8 +5,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatDialog} from '@angular/material/dialog';
-import { PopUp } from './popUp/popUp.component';
 import { CheckBox } from './checkBox/checkBox.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -16,16 +16,17 @@ import { CheckBox } from './checkBox/checkBox.component';
 })
 
 export class TableComponent implements AfterViewInit {
-  dataSource: any
   displayedColumns: string[] = ['orderId', 'orderDate', 'partyName', 'station', 'Mobile', 'status', 'action'];
+  tableData = [];
+  dataSource: any
+  selectedObj:any; //sent in popup component as a @Input
+  requestDate: any;
+  selectedOption:any;
+  selectedStatusOption:any;
+  Show = false;
+  isPopupOpen:boolean = false;
   isDivVisible: boolean = false;
   clikOnCustom: boolean = false;
-  requestDate: any;
-  tableData = [];
-  selectedOption:any;
-  Show = false;
-  selectedStatusOption:any;
-  isPopup:boolean = false;
   
   customForm = new FormGroup({
     formDate: new FormControl(),
@@ -45,7 +46,7 @@ export class TableComponent implements AfterViewInit {
    
   ngOnInit() { this.dataSource = this._tableDataService.getData()};
 
-  constructor(private _tableDataService: TableDataService, private _liveAnnouncer: LiveAnnouncer, public dialog: MatDialog) {};
+  constructor(private _tableDataService: TableDataService, private _liveAnnouncer: LiveAnnouncer, public dialog: MatDialog, private router: Router) {};
 
   search(event: any) { this.dataSource.filter = event.target.value }; //Filter by search bar
   
@@ -166,17 +167,14 @@ export class TableComponent implements AfterViewInit {
     }
   }
 
-  selectedObj:any;
-
-  // openDialog() { const dialogRef = this.dialog.open(PopUp) };
   openPopUp(i) {
-    this.isPopup = true;
     this.selectedObj = this.dataSource.filteredData[i];
+    this.router.navigate(['edit', this.selectedObj]);
   }
 
-  openCheckBox() {
-    const dialogRef = this.dialog.open(CheckBox);
-  }
+  closePopUp() { this.isPopupOpen = false }; //control from popUp component!
+
+  openCheckBox() {   const dialogRef = this.dialog.open(CheckBox) }
 
   selectedBox(colName: string) {
     let newCols = this.displayedColumns;
